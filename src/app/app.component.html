@@ -1,0 +1,20 @@
+<header><fa-icon id="logo" [icon]="faWarehouse"></fa-icon>Easy Warehouse v.1.2</header>
+<div id="underHeader">
+    <nav>
+        <a routerLink="/add-index" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="plusSquare"></fa-icon><span class="menuSpan"> Dodaj produkt</span></a>
+        <a routerLink="/supply" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faIn"></fa-icon><span class="menuSpan"> Przyjmij dostawę</span></a>
+        <a routerLink="/search" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faSearch"></fa-icon><span class="menuSpan"> Znajdź produkt</span></a>
+        <a routerLink="/check" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faArchive"></fa-icon><span class="menuSpan"> Sprawdź lokalizacje</span></a>
+        <a routerLink="/transfer" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faExchangeAlt"></fa-icon><span class="menuSpan"> Transfer</span></a>
+        <a routerLink="/history" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faHistory"></fa-icon><span class="menuSpan"> Historia produktu</span></a>
+        <a routerLink="/packing" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faSignOutAlt"></fa-icon><span class="menuSpan"> Wysyłka</span></a>
+        <div [hidden]="!isUser">
+            <a routerLink="/auth" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faUser"></fa-icon><span class="menuSpan">Wyloguj</span></a>
+        </div>
+    </nav>
+    <div id="router">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+

@@ -1,0 +1,110 @@
+body {
+    margin: 0px;
+    font-family: 'Oswald', sans-serif;
+    background-color: #58B1FC;
+}
+button {
+    background-color: #248DC1;
+    color: white;
+    padding: 3px;
+    border: 2px solid #58B1FC;
+    /* border-color: #58B1FC; */
+    border-radius: 5px;
+}
+button:active{
+  background-color: #58B1FC;
+  border: 2px solid #248DC1;
+}
+button:focus{
+  outline: 0px;
+}
+table{
+  border-collapse:collapse
+}
+.border {
+  border-bottom: 1px solid black;
+}
+.invisible{
+  position: absolute;
+  top: -8000%;
+  background-color: #248DC1;
+  border: 7px solid #58B1FC;
+  box-shadow: 10px 10px 7px gray;
+}
+.visible {
+  position: absolute;
+  top: 20%;
+  left: 210px;
+  right: 50%;
+  padding: 10px;
+  color: white;
+  background-color: #248DC1;
+  border: 7px solid #58B1FC;
+  box-shadow: 10px 10px 7px gray;
+}
+.visible h2{
+  margin-top: 5px;
+}
+.visible p{
+  margin: 4px;
+  /* padding-left: 20px; */
+}
+.visible button{
+  margin: 10px 20px;
+  font-size: 1.3em;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.center{
+  text-align: center;
+}
+.button {
+  background-color: white;
+  color: black;
+  padding: 3px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.mobile{
+  display: none;
+}
+.pc{
+  display: block;
+}
+
+@media only screen and (max-width: 500px) {
+  .visible{
+    top: 30px;
+    left: 5%;
+    right: 5%;
+    box-sizing: border-box;
+    z-index: 10;
+  }
+  input{
+    margin-top: 20px;
+  }
+  .mobile{
+    display: block;
+  }
+  .pc{
+    display: none;
+  }
+  .mobile p{
+    margin: 0px;
+  }
+  .mobileFa{
+    padding-left: 20px;
+  }
+}

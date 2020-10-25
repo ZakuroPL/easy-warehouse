@@ -1,0 +1,57 @@
+a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.3em;
+    padding: 5px 10px;
+}
+a:hover{
+    color: white;
+    text-decoration: none;
+}
+header {
+    padding: 5px 10px;
+    font-size: 25px;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    background-color: #58B1FC;
+    color: white;
+}
+#logo {
+    padding: 0px 10px 10px 20px;
+    font-size: 30px
+}
+#underHeader{
+    display: grid;
+    grid-template-columns: 200px auto;
+    height: 100vh;
+}
+nav {
+    background-color: #248DC1;
+}
+nav a{
+    display: flex;
+    align-items: center;
+}
+.iconeNav {
+    font-size: 1.3em;
+    padding-right: 10px;
+}
+.activeLink {
+    background-color: #51c0f8;
+}
+#router{
+    background-color: #E9F0F9;
+    padding: 0px 20px;
+}
+
+@media only screen and (max-width: 500px) {
+
+    #underHeader{
+        display: grid;
+        grid-template-columns: 47px auto;
+    }
+    .menuSpan{
+        display: none;
+    }
+}

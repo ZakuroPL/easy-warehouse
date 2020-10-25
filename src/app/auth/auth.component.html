@@ -1,0 +1,30 @@
+<div [hidden]="isloggedIn">
+    <h2>Logowanie do systemu</h2>
+    <p style="color:red" [hidden]="!isWrongPassword"><b>Podałeś niepoprawne dane logowania!</b></p>
+<form [formGroup]="loginForm" (ngSubmit)="saveForm()">
+    <input type="text" formControlName="username"><br>
+    <input type="password" formControlName="password"><br>
+    <button type="submit">zaloguj się</button>
+</form>
+</div>
+<div [hidden]="!isloggedIn">
+    <h2>Jesteś zalogowany</h2>
+    <button (click)="logOut()">wyloguj</button>
+</div>
+<div [hidden]=isConnected class="visible" style="text-align: center;">
+    <h2>Łączenie z Heroku</h2>
+    <img style="width: 2em" src="../../assets/loading.svg" /><br>
+    <p>Proces może potrwać kilkanaście sekund. Proszę o cierpliwość.</p>
+</div>
+<div [hidden]="!isGuide" class="visible">
+    <h1>Witaj na Web aplikacji magazynowej</h1>
+    <h2>Koniecznie przeczytaj przed użyciem programu!</h2>
+    <p><b>Dodaj produkt </b>- tutaj możesz dodać nowy produkt, który w przyszłości przyjdzie na magazyn.</p>
+    <p><b>Znajdź produkt </b>- wybierz produkt, a następnie ilość jaką chcesz przyjąć z dostawy na stan maagazynu. Dodane towary zapiszą się w lokalizacji supply.</p>
+    <p><b>Sprawdź lokalizacje </b>- wybierz produkt, aby zobaczyć w jakich lokalizacjach aktualnie możesz go znaleźć.</p>
+    <p><b>Transfer </b>- wybierz lokalizację z której chcesz przenieść produkt, wybierz produkt, a następnie wskaż lokalizację, gdzie dany produkt został przeniesiony.</p>
+    <p><b>Historia produktu </b>- tutaj znajdziesz historię wszystkich transferów danego produktu.</p>
+    <p><b>Wysyłka </b>- wybierz produkt oraz podaj ilość, którą chcesz spakować, a następnie wysłać z magazynu do klienta. Jeśli danego produktu nie ma, należy pierw użyć opcji Transfer w celu przetransportowania produktu do lokazacji out.</p>
+    <button class="button" (click)="guide()"> ok </button>
+</div>
+

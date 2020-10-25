@@ -1,0 +1,67 @@
+<h2>Dodaj produkt na stan magazynu</h2>
+
+
+<input placeholder="wprowadź id produktu" list="products1" [(ngModel)]="selectedProductByIndex">
+<datalist id="products1">
+  <option *ngFor="let product of products" [value]="product.index">
+  </option>
+</datalist>  
+
+<input placeholder="wprowadź nazwę produkt" list="products2" [(ngModel)]="selectedProductByName">
+<datalist id="products2">
+  <option *ngFor="let product of products" [value]="product.name">
+  </option>
+</datalist>  
+
+<input placeholder="wprowadź EAN produkt" list="products3" [(ngModel)]="selectedProductByEan">
+<datalist id="products3">
+  <option *ngFor="let product of products" [value]="product.ean">
+  </option>
+</datalist>  
+<br>
+<input id="inputPCSsupply" type="number" placeholder="ilość" [(ngModel)]="pcs"><br>
+
+<br>
+<button (click)="getProductFromList()">Przyjmij na stan</button>
+
+<div [hidden]="!isMoreThanOne" class="visible">
+  <h2>Błąd: użyłeś więcej niż jednego parametru</h2>
+  <p class="center">Użyj wyłącznie jednego z trzech parametrów</p>
+  <div class="center">
+      <button class="button" (click)="ok()">OK</button>
+  </div>
+</div>
+
+<div [hidden]="!isAllEmpty" class="visible">
+  <h2>Błąd: brak kryterium</h2>
+  <p class="center">Użyj wyłącznie jednego z trzech parametrów</p>
+  <div class="center">
+      <button class="button" (click)="ok()">OK</button>
+  </div>
+</div>
+
+<div [hidden]="!isPcsEmpty" class="visible">
+  <h2>Błąd: nieprawidłowa ilość</h2>
+  <p class="center">Wprowadź dodatnią ilość produktu</p>
+  <div class="center">
+      <button class="button" (click)="ok()">OK</button>
+  </div>
+</div>
+
+<div [hidden]="!isReadyForSupply" class="visible">
+  <h2>Czy na pewno chcesz dodać na stan:</h2>
+  <p>nazwa: {{ nameOfSelected }}</p>
+  <p>ilość: {{ pcs }}</p>
+  <div class="buttons">
+      <button class="button" (click)="ok()">Nie</button>
+      <button class="button" (click)="confirmSupplyProduct()">Tak</button>
+  </div>
+</div>
+<div [hidden]="!isCreated" class="visible">
+  <h2>Produkt dodany</h2>
+  <p class="center">Dodano {{ pcs }} sztuk na stan</p>
+  <div class="center">
+      <button class="button" (click)="ok()">OK</button>
+  </div>
+</div>
+

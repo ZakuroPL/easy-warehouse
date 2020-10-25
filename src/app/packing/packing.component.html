@@ -1,0 +1,57 @@
+<h2>Wyślij produkt z lokalizacji out</h2>
+ 
+
+<div class="pc">
+    <table>
+      <tr>
+        <td id="index">index</td>
+        <td id="name">nazwa produktu</td>
+        <td id="pcs">ilość</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr class="border" *ngFor="let transfer of transfers">   
+        <td *ngIf="transfer.location == 2 && transfer.pcs > 0">{{transfer.product_index}}</td>
+        <td *ngIf="transfer.location == 2 && transfer.pcs > 0">{{transfer.product_name}}</td>
+        <td *ngIf="transfer.location == 2 && transfer.pcs > 0">{{transfer.pcs}}</td>
+        <td *ngIf="transfer.location == 2 && transfer.pcs > 0"><fa-icon class="colorBlue" [icon]="faSignOutAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.product_name)"></fa-icon></td>
+      </tr>
+    </table>
+    <p [hidden]="!isNotFound">Lokalizacja out jest pusta.</p>
+    <p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+</div>
+
+<div class="mobile">
+  <div *ngFor="let transfer of transfers">
+    <p *ngIf="transfer.location == 2 && transfer.pcs > 0">{{transfer.product_index}}</p>
+    <p *ngIf="transfer.location == 2 && transfer.pcs > 0">{{transfer.product_name}}</p>
+    <p class="border" *ngIf="transfer.location == 2 && transfer.pcs > 0">{{transfer.pcs}}<fa-icon class="colorBlue mobileFa" [icon]="faSignOutAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.product_name)"></fa-icon></p>
+</div>
+  <p [hidden]="!isNotFound">Lokalizacja out jest pusta.</p>
+</div>
+
+  <div [hidden]="!isGetSelectedProduct" class="visible">
+    <h2>Przygotowane do wysyłki:</h2>
+    <p>nazwa: {{ selectedProductName }}</p>
+    <p>ilość dostępna: {{ selectedPcs }}</p>
+    <input type="number" placeholder="ilość" [(ngModel)]="pcsToTransfer"><br>
+    <br>
+    <button class="button" (click)="tryTransfer()">Spakuj</button>
+  </div>
+
+  <div [hidden]="!isWrongPcs" class="visible">
+    <h2>Bład: zła liczba</h2>
+    <div class="center">
+      <p>Nie posiadasz wystarczającej liczby produktu</p>
+      <br>
+      <button class="button" (click)="ok()">OK</button>
+    </div>
+  </div>
+
+  <div [hidden]="!isSuccess" class="visible">
+    <h2>Transfer wykonany</h2>
+    <div class="center">
+      <p>Transfer został wykonany poprawnie</p>
+      <br>
+      <button class="button" (click)="ok()">OK</button>
+    </div>
+  </div>

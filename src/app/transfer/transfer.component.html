@@ -1,0 +1,73 @@
+<h2>Transfer produktu na inna lokalizacje</h2>
+
+<input placeholder="wprowadź lokalizacje" list="locations" [(ngModel)]="ngSelectedLocation">
+<datalist id="locations">
+  <option *ngFor="let location of locations" [value]="location.location">
+  </option>
+</datalist>  
+<br>
+<button (click)="check()">znajdź produkt</button>
+<br><br>
+<div class="pc">
+    <table>
+      <tr>
+        <td id="index">index</td>
+        <td id="name">nazwa produktu</td>
+        <td id="pcs">ilość</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr class="border" *ngFor="let transfer of transfers">   
+        <td *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0 && isConnected">{{transfer.product_index}}</td>
+        <td *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0 && isConnected">{{transfer.product_name}}</td>
+        <td *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0 && isConnected">{{transfer.pcs}}</td>
+        <td *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0 && isConnected"><fa-icon class="colorBlue" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></td>
+      </tr>
+    </table>
+    <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
+    <p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+  </div>
+
+<div class="mobile">
+  <p *ngIf="selectedLocation"><b>nazwa produktu:</b> {{selectedLocation}}</p>
+  <div *ngFor="let transfer of transfers">
+    <p *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0">index: {{transfer.product_index}}</p>
+    <p *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0">nazwa: {{transfer.product_name}}</p>
+    <p class="border" *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0">ilość: {{transfer.pcs}}<fa-icon class="colorBlue mobileFa" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></p>
+  </div>
+  <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
+</div>
+
+
+
+
+  <div [hidden]="!isGetSelectedProduct" class="visible">
+    <h2>Transfer produktu:</h2>
+    <p>nazwa: {{ selectedProductName }}</p>
+    <p>ilość dostępna: {{ selectedPcs }}</p>
+    <input type="number" placeholder="ilość" [(ngModel)]="pcsToTransfer"><br>
+    <input placeholder="do lokalizacji" list="locations2" [(ngModel)]="locationToTransfer">
+    <datalist id="locations2">
+      <option *ngFor="let location of locations" [value]="location.location">
+      </option>
+    </datalist>  
+    <br>
+    <button class="button" (click)="tryTransfer()">transfer</button>
+  </div>
+
+  <div [hidden]="!isWrongPcs" class="visible">
+    <h2>Bład: zła liczba</h2>
+    <div class="center">
+      <p>Nie posiadasz wystarczającej liczby produktu</p>
+      <br>
+      <button class="button" (click)="ok()">OK</button>
+    </div>
+  </div>
+
+  <div [hidden]="!isSuccess" class="visible">
+    <h2>Transfer wykonany</h2>
+    <div class="center">
+      <p>Transfer został wykonany prawidłowo</p>
+      <br>
+      <button class="button" (click)="ok()">OK</button>
+    </div>
+  </div>

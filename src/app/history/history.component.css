@@ -1,0 +1,19 @@
+input {
+    margin-bottom: 30px;
+    margin-right: 20px;
+}
+#name{
+    min-width: 200px;
+}
+#pcs{
+    min-width: 60px;
+}
+.location{
+    min-width: 80px;
+}
+#date{
+    min-width: 100px;
+}
+#user{
+    min-width: 50px;
+}

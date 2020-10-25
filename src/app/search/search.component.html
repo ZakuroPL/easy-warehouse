@@ -1,0 +1,71 @@
+<h2>Znajdź lokalizację dla produktu</h2>
+
+<input placeholder="wprowadź index produktu" list="products1" [(ngModel)]="selectedProductByIndex">
+<datalist id="products1">
+  <option *ngFor="let product of products" [value]="product.index">
+  </option>
+</datalist>  
+
+<input placeholder="wprowadź nazwę produkt" list="products2" [(ngModel)]="selectedProductByName">
+<datalist id="products2">
+  <option *ngFor="let product of products" [value]="product.name">
+  </option>
+</datalist>  
+
+<input placeholder="wprowadź EAN produkt" list="products3" [(ngModel)]="selectedProductByEan">
+<datalist id="products3">
+  <option *ngFor="let product of products" [value]="product.ean">
+  </option>
+</datalist>  
+
+<br>
+<button (click)="getProductFromList()">znajdź produkt</button>
+
+<div [hidden]="!isMoreThanOne" class="visible">
+  <h2>Błąd: użyłeś więcej niż jednego parametru</h2>
+  <p class="center">Użyj wyłącznie jednego z trzech parametrów</p>
+  <div class="center">
+      <button class="button" (click)="ok()">OK</button>
+  </div>
+</div>
+
+<div [hidden]="!isAllEmpty" class="visible">
+  <h2>Błąd: brak kryterium</h2>
+  <p class="center">Użyj wyłącznie jednego z trzech parametrów</p>
+  <div class="center">
+      <button class="button" (click)="ok()">OK</button>
+  </div>
+</div>
+
+<br><br>
+<div class="pc">
+  <table>
+    <tr>
+      <td id="name">nazwa produktu:</td>
+      <td id="pcs">ilość:</td>
+      <td id="location">lokalizacja:</td>
+    </tr>
+    <tr class="border" *ngFor="let transfer of transfers">      
+      <td *ngIf="transfer.product_name == myProduct && transfer.pcs > 0 && isConnected">{{transfer.product_name}}</td>
+      <td *ngIf="transfer.product_name == myProduct && transfer.pcs > 0 && isConnected">{{transfer.pcs}}</td>
+      <td *ngIf="transfer.product_name == myProduct && transfer.pcs > 0 && isConnected">{{transfer.location_name}}</td>
+    </tr>
+  </table>
+  <p [hidden]="!isNotFound">Tego produktu nie ma w żadnej lokalizacji.</p>
+  <p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+</div>
+
+<div class="mobile">
+  <p *ngIf="myProduct"><b>nazwa produktu:</b> {{myProduct}}</p>
+  <div *ngFor="let transfer of transfers">
+    <p *ngIf="transfer.product_name == myProduct && transfer.pcs > 0">ilość: {{transfer.pcs}}</p>
+    <p *ngIf="transfer.product_name == myProduct && transfer.pcs > 0" class="border">lokalizacja: {{transfer.location_name}}</p>
+  </div>
+  <p [hidden]="!isNotFound">Tego produktu nie ma w żadnej lokalizacji.</p>
+</div>
+
+
+
+
+
+

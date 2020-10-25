@@ -1,0 +1,10 @@
+input {
+    margin-bottom: 30px;
+    margin-right: 20px;
+}
+#name {
+    min-width: 200px;
+}
+#pcs {
+    min-width: 60px;
+}

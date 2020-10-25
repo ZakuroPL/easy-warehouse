@@ -1,0 +1,80 @@
+<h2>Dodaj nowy produkt do katalogu</h2>
+
+
+<input type="checkbox" [checked]="isEan" (change)="isEan = !isEan; eanNumber = null">produkt z numerem EAN<br>
+
+<input type="number" placeholder="index" [(ngModel)]="indexNumber"><br>
+<input type="text" placeholder="nazwa produktu" [(ngModel)]="nameString"><br>
+<input *ngIf="isEan" type="number" placeholder="EAN" [(ngModel)]="eanNumber"><br>
+
+<button (click)="tryCreateProduct()">dodaj produkt</button>
+
+
+<div [hidden]="!isOk" class="visible">
+    <h2>Czy na pewno chcesz stworzyć nowy produkt?</h2>
+    <p>index: {{ indexNumber }}</p>
+    <p>nazwa: {{ nameString }}</p>
+    <p>EAN: {{ eanNumber }}</p>
+    <div class="buttons">
+        <button class="button" (click)="restart()">Nie</button>
+        <button class="button" (click)="createNewProduct()">Tak</button>
+    </div>
+</div>
+<div [hidden]="!isConfirmCreated" class="visible">
+    <h2>Produkt został stworzony.</h2>
+    <div class="center">
+        <button class="button" (click)="restart()">OK</button>
+    </div>
+</div>
+<div [hidden]="isGoodLengthIndex" class="visible">
+    <h2>Błąd: podałeś niepoprawny index.</h2>
+    <p class="center">Wprowadź trzycyfrowy index.</p>
+    <div class="center">
+        <button class="button" (click)="restart()">OK</button>
+    </div>
+</div>
+<div [hidden]="isGoodLengthName" class="visible">
+    <h2>Błąd: podałeś zbyt krótką nazwę.</h2>
+    <p class="center">Wprowadź nazwę składającą się z min. 10 znaków.</p>
+    <div class="center">
+        <button class="button" (click)="restart()">OK</button>
+    </div>
+</div>
+<div [hidden]="isGoodLengthEAN" class="visible">
+    <h2>Błąd: zły EAN.</h2>
+    <p class="center">Wprowadzać prawidłowy kod EAN.</p>
+    <div class="center">
+        <button class="button" (click)="restart()">OK</button>
+    </div>
+</div>
+<div [hidden]="isUniqueIndex" class="visible">
+    <h2>Błąd: index {{indexNumber}} już istnieje.</h2>
+    <p class="center">Wprowadź unikatowy index dla tego produktu.</p>
+    <div class="center">
+        <button class="button" (click)="restart()">OK</button>
+    </div>
+</div>
+<div [hidden]="isUniqueEan" class="visible">
+    <h2>Błąd: EAN {{eanNumber}} już istnieje.</h2>
+    <p class="center">Wprowadź unikatowy EAN dla tego produktu.</p>
+    <div class="center">
+        <button class="button" (click)="restart()">OK</button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 
+<input type="checkbox" [checked]="isEan" (change)="isEan = !isEan">produkt z numerem EAN<br>
+<form [formGroup]="productForm" (ngSubmit)="createProduct()">
+<input type="number" placeholder="index" formControlName="index" [ngModel]="indexNumber"><br>
+<input type="text" placeholder="nazwa produktu" formControlName="name"><br>
+<input *ngIf="isEan" type="number" placeholder="EAN" formControlName="ean" [ngModel]="eanNumber"><br>
+<button type="submit">dodaj produkt</button>
+</form> -->
