@@ -7,21 +7,23 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class ApiService {
 
-  loginUrl = "https://zakuro-warehouse.herokuapp.com/auth/"
-  transferUrl = "https://zakuro-warehouse.herokuapp.com/api/transfers/"
-  locationURL = "https://zakuro-warehouse.herokuapp.com/api/locations/"
-  productURL = "https://zakuro-warehouse.herokuapp.com/api/products/"
-  supplyURL =  "https://zakuro-warehouse.herokuapp.com/api/locations/1/add_transfer/"
-  packingURL =  "https://zakuro-warehouse.herokuapp.com/api/locations/2/add_transfer/"
-  historyURL = "https://zakuro-warehouse.herokuapp.com/api/history/"
+  // createUser = "https://zakuro-warehouse.herokuapp.com/api/users/"
+  // loginUrl = "https://zakuro-warehouse.herokuapp.com/auth/"
+  // transferUrl = "https://zakuro-warehouse.herokuapp.com/api/transfers/"
+  // locationURL = "https://zakuro-warehouse.herokuapp.com/api/locations/"
+  // productURL = "https://zakuro-warehouse.herokuapp.com/api/products/"
+  // supplyURL =  "https://zakuro-warehouse.herokuapp.com/api/locations/1/add_transfer/"
+  // packingURL =  "https://zakuro-warehouse.herokuapp.com/api/locations/2/add_transfer/"
+  // historyURL = "https://zakuro-warehouse.herokuapp.com/api/history/"
 
-  // loginUrl = "http://127.0.0.1:8000/auth/"
-  // transferUrl = "http://127.0.0.1:8000/api/transfers/"
-  // locationURL = "http://127.0.0.1:8000/api/locations/"
-  // productURL = "http://127.0.0.1:8000/api/products/"
-  // supplyURL =  "http://127.0.0.1:8000/api/locations/1/add_transfer/"
-  // packingURL =  "http://127.0.0.1:8000/api/locations/2/add_transfer/"
-  // historyURL = "http://127.0.0.1:8000/api/history/"
+  createUserURL = "http://127.0.0.1:8000/api/users/"
+  loginUrl = "http://127.0.0.1:8000/auth/"
+  transferUrl = "http://127.0.0.1:8000/api/transfers/"
+  locationURL = "http://127.0.0.1:8000/api/locations/"
+  productURL = "http://127.0.0.1:8000/api/products/"
+  supplyURL =  "http://127.0.0.1:8000/api/locations/1/add_transfer/"
+  packingURL =  "http://127.0.0.1:8000/api/locations/2/add_transfer/"
+  historyURL = "http://127.0.0.1:8000/api/history/"
 
   
   headers = new HttpHeaders({
@@ -32,7 +34,7 @@ export class ApiService {
     private httpClient: HttpClient,
     private cookieService: CookieService,
   ) { }
-
+  
   getTransfers() {
     return  this.httpClient.get(this.transferUrl, {headers: this.getTokenFromCookie()});
   }
@@ -66,6 +68,10 @@ export class ApiService {
   loginUser(loginData){
     const newTransfer = JSON.stringify(loginData);
     return this.httpClient.post(this.loginUrl, newTransfer, {headers: this.getTokenFromCookie()})
+  }
+  createUser(newUserData){
+    const newTransfer = JSON.stringify(newUserData);
+    return this.httpClient.post(this.createUserURL, newTransfer, {headers: this.getTokenFromCookie()})
   }
 
   getTokenFromCookie(){

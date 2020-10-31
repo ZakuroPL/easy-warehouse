@@ -1,1 +1,13 @@
-<p>add-user works!</p>
+<h2>Only for admin! </h2>
+
+
+
+<form [formGroup]="userForm" (submit)="create()">
+    <input formControlName="username" type="text" placeholder="username"><br>
+    <input formControlName="password" type="password" placeholder="password"><br>
+
+    <button type="submit">create</button>
+
+</form>
+<p [hidden]="!isCreated">Created</p>
+<p [hidden]="!isError">error</p>
