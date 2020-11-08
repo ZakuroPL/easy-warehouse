@@ -43,7 +43,6 @@ export class SearchComponent implements OnInit {
           if(this.selectedProductByIndex == product.index && this.selectedProductByName == "" && this.selectedProductByEan =="") this.selectedProduct = product.name
           else if(this.selectedProductByName == product.name && this.selectedProductByIndex == "" && this.selectedProductByEan =="") this.selectedProduct = product.name
           else if(this.selectedProductByEan == product.ean && this.selectedProductByName == "" && this.selectedProductByIndex =="")  this.selectedProduct = product.name
-          else console.log("produnt not found")
         }
         this.numberForCheck = 0;
         this.myProduct = this.selectedProduct;

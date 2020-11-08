@@ -44,7 +44,6 @@ export class HistoryComponent implements OnInit {
           if(this.selectedProductByIndex == product.index && this.selectedProductByName == "" && this.selectedProductByEan =="") this.selectedProduct = product.name
           else if(this.selectedProductByName == product.name && this.selectedProductByIndex == "" && this.selectedProductByEan =="") this.selectedProduct = product.name
           else if(this.selectedProductByEan == product.ean && this.selectedProductByName == "" && this.selectedProductByIndex =="")  this.selectedProduct = product.name
-          else console.log("product not found")
         }
         this.numberForCheck = 0;
         for (let histor of this.history){
