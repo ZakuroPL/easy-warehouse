@@ -7,12 +7,12 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class ApiService {
 
-  // createUser = "https://zakuro-warehouse.herokuapp.com/api/users/"
+  // createUserURL = "https://zakuro-warehouse.herokuapp.com/api/users/"
   // loginUrl = "https://zakuro-warehouse.herokuapp.com/auth/"
   // transferUrl = "https://zakuro-warehouse.herokuapp.com/api/transfers/"
   // locationURL = "https://zakuro-warehouse.herokuapp.com/api/locations/"
   // productURL = "https://zakuro-warehouse.herokuapp.com/api/products/"
-  // supplyURL =  "https://zakuro-warehouse.herokuapp.com/api/locations/1/add_transfer/"
+  // supplyURL =  "https://zakuro-warehouse.herokuapp.com/api/locations/1/supply_transfer/"
   // packingURL =  "https://zakuro-warehouse.herokuapp.com/api/locations/2/add_transfer/"
   // historyURL = "https://zakuro-warehouse.herokuapp.com/api/history/"
 

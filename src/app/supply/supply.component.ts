@@ -16,6 +16,7 @@ export class SupplyComponent implements OnInit {
   selectedProductByEan = "";
   selectedId = "";
   pcs: number;
+  pcsForConfirm: number;
 
   locationFrom = 1;
 
@@ -33,46 +34,25 @@ export class SupplyComponent implements OnInit {
     private cookieService: CookieService,
   ) { }
 
-  getProductFromList(){
-    this.selectedId = "";
-    for (let product of this.products){
-      if(this.selectedProductByIndex == product.index && this.selectedProductByName == "" && this.selectedProductByEan ==""){
-        this.nameOfSelected = product.name;
-        this.selectedId = product.id;
-      } 
-      else if(this.selectedProductByName == product.name && this.selectedProductByIndex == "" && this.selectedProductByEan ==""){
-        this.nameOfSelected = product.name;
-        this.selectedId = product.id;
-      } 
-      else if(this.selectedProductByEan == product.ean && this.selectedProductByName == "" && this.selectedProductByIndex ==""){
-        this.nameOfSelected = product.name;
-        this.selectedId = product.id;
-      } 
-      else console.log("product not found")
-    }
-    this.checkThis();
-  }
-  checkThis(){
+  beforeSupply(){
     if(this.selectedProductByName != "" && this.selectedProductByEan !="" ||
     this.selectedProductByName != "" && this.selectedProductByIndex !="" ||
     this.selectedProductByEan != "" && this.selectedProductByIndex !="") this.isMoreThanOne = true;
-    if(this.selectedProductByName == "" && this.selectedProductByEan =="" && this.selectedProductByIndex == "") this.isAllEmpty = true;
-    this.supplyProduct();
-  }
-
-  supplyProduct(){
-      if(!this.isMoreThanOne && !this.isAllEmpty && this.pcs != null && this.pcs > 0){
-       this.isReadyForSupply = true;
-      }
-      else if(this.pcs == null || this.pcs <= 0) {
-        if(this.isMoreThanOne==false && this.isAllEmpty==false){
-          this.isPcsEmpty = true;
+    else if(this.selectedProductByName == "" && this.selectedProductByEan =="" && this.selectedProductByIndex == "") this.isAllEmpty = true;
+    else if(this.pcs <= 0 || this.pcs == null) this.isPcsEmpty = true;
+    else{
+      for (let product of this.products){
+        if(this.selectedProductByIndex == product.index && this.selectedProductByName == "" && this.selectedProductByEan =="" ||
+        this.selectedProductByName == product.name && this.selectedProductByIndex == "" && this.selectedProductByEan =="" ||
+        this.selectedProductByEan == product.ean && this.selectedProductByName == "" && this.selectedProductByIndex ==""){
+          this.nameOfSelected = product.name;
+          this.selectedId = product.id;
+          this.isReadyForSupply = true;
         }
       }
-      else console.log("error");
-    };
+    }
+  }
   confirmSupplyProduct(){
-    console.log("id: " + this.selectedId + "pcs: " + this.pcs);
     this.sendToApi();
     this.ok();
   }
@@ -86,13 +66,10 @@ export class SupplyComponent implements OnInit {
     this.selectedProductByName = "";
     this.selectedProductByEan = "";
     this. selectedId = "";
+    this.pcsForConfirm = this.pcs;
     this.pcs = null;
   }
   sendToApi(){
-    const token = this.cookieService.get("token");
-    if(!token){
-      this.router.navigate(['/auth']);
-    }
     this.apiService.postSupplyProduct(this.locationFrom, this.selectedId, this.pcs).subscribe(
       result => {
         console.log(result);

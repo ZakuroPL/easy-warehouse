@@ -22,7 +22,7 @@
 <input id="inputPCSsupply" type="number" placeholder="ilość" [(ngModel)]="pcs"><br>
 
 <br>
-<button (click)="getProductFromList()">Przyjmij na stan</button>
+<button (click)="beforeSupply()">Przyjmij na stan</button>
 
 <div [hidden]="!isMoreThanOne" class="visible">
   <h2>Błąd: użyłeś więcej niż jednego parametru</h2>
@@ -59,7 +59,7 @@
 </div>
 <div [hidden]="!isCreated" class="visible">
   <h2>Produkt dodany</h2>
-  <p class="center">Dodano {{ pcs }} sztuk na stan</p>
+  <p class="center">Dodano {{ pcsForConfirm }} sztuk na stan</p>
   <div class="center">
       <button class="button" (click)="ok()">OK</button>
   </div>

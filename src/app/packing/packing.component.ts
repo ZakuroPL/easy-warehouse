@@ -19,7 +19,6 @@ export class PackingComponent implements OnInit {
   selectedProductName = "";
   selectedPcs = null;
   pcsToTransfer = null;
-  pcsToTransferMinus = null;
 
   locationFrom = 2;
   numberForCheck = 0;
@@ -52,7 +51,6 @@ export class PackingComponent implements OnInit {
     }  
   postTransfer(){
     this.isGetSelectedProduct = false;
-    this.pcsToTransfer = -this.pcsToTransfer;
     this.apiService.postPackingProduct(this.locationFrom, this.selectedProduct, this.pcsToTransfer).subscribe(
       result => {
         this.isSuccess = true;
@@ -76,7 +74,6 @@ export class PackingComponent implements OnInit {
     this.apiService.getTransfers().subscribe(
       data => {
         this.transfers = data;
-        console.log(this.transfers);
         this.check();
       },
       error => console.log(error)
@@ -86,10 +83,8 @@ export class PackingComponent implements OnInit {
 
 
   check(){
-    console.log("check")
     this.numberForCheck = 0;
     for (let transfer of this.transfers){
-      console.log("work");
       if(transfer.location != this.locationFrom || transfer.location == this.locationFrom && transfer.pcs <= 0) this.numberForCheck++
     }
     if(this.transfers.length == this.numberForCheck){
@@ -113,7 +108,6 @@ export class PackingComponent implements OnInit {
     this.apiService.getTransfers().subscribe(
       data => {
         this.transfers = data;
-        console.log(this.transfers);
         this.check();
       },
       error => {

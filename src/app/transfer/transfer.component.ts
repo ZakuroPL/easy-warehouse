@@ -24,7 +24,6 @@ export class TransferComponent implements OnInit {
   selectedPcs = null;
   locationFrom = "";
   pcsToTransfer = null;
-  pcsToTransferMinus = null;
   locationToTransfer = "";
   locattionToTransferId = "";
 
@@ -55,7 +54,7 @@ export class TransferComponent implements OnInit {
         this.locattionToTransferId = location.id;
       }
     }
-    if(this.pcsToTransfer <= this.selectedPcs && this.pcsToTransfer != null) this.postTransferMinus();
+    if(this.pcsToTransfer <= this.selectedPcs && this.pcsToTransfer != null) this.postTransfer();
     else{
       this.isWrongPcs = true;
       this.pcsToTransfer = null;
@@ -67,20 +66,6 @@ export class TransferComponent implements OnInit {
       result => {
         this.isSuccess = true;
         console.log(result);
-      },
-      error => {
-        console.log(error);
-      }
-    )
-  }
-  postTransferMinus(){
-    this.isGetSelectedProduct = false;
-    this.pcsToTransferMinus = -this.pcsToTransfer;
-    console.log("important " + this.pcsToTransferMinus)
-    this.apiService.postTransferProduct(this.locattionToTransferId, this.selectedProduct, this.pcsToTransferMinus, this.locationFrom).subscribe(
-      result => {
-        this.postTransfer();
-        console.log(result);  
       },
       error => {
         console.log(error);
