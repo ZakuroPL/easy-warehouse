@@ -34,7 +34,7 @@ export class AddIndexComponent implements OnInit {
       if(this.indexNumber > 99 && this.indexNumber < 1000){
         if(this.nameString.length >= 10){
           if(this.isEan){
-            if(this.eanNumber > 999999999999 && this.eanNumber < 100000000000000) this.checkData;
+            if(this.eanNumber > 999999999999 && this.eanNumber < 100000000000000) this.checkData();
             else this.isGoodLengthEAN = false;
           }
           else{
