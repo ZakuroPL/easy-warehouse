@@ -1,18 +1,18 @@
 <h2>Znajdź lokalizację dla produktu</h2>
 
-<input placeholder="wprowadź id produktu" list="products1" [(ngModel)]="selectedProductByIndex">
+<input placeholder="wprowadź id produktu" list="products1" [(ngModel)]="selectedProductByIndex" (keyup.enter)="getProductFromList()">
 <datalist id="products1">
   <option *ngFor="let product of products" [value]="product.index">
   </option>
 </datalist>  
 
-<input placeholder="wprowadź nazwę produkt" list="products2" [(ngModel)]="selectedProductByName">
+<input placeholder="wprowadź nazwę produkt" list="products2" [(ngModel)]="selectedProductByName" (keyup.enter)="getProductFromList()">
 <datalist id="products2">
   <option *ngFor="let product of products" [value]="product.name">
   </option>
 </datalist>  
 
-<input placeholder="wprowadź EAN produkt" list="products3" [(ngModel)]="selectedProductByEan">
+<input placeholder="wprowadź EAN produkt" list="products3" [(ngModel)]="selectedProductByEan" (keyup.enter)="getProductFromList()">
 <datalist id="products3">
   <option *ngFor="let product of products" [value]="product.ean">
   </option>

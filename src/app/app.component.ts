@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { faWarehouse, faPlusSquare, faSignInAlt, faSearch, 
 faArchive, faExchangeAlt, faHistory, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import { AuthGuard } from './auth.guard';
 
 @Component({
   selector: 'app-root',
@@ -19,15 +19,14 @@ export class AppComponent  implements OnInit {
   faSignOutAlt = faSignOutAlt;
   faUser = faUser;
 
-  isUser = false;
-
   constructor(
-    private cookieService: CookieService,
+    public guard: AuthGuard
   ) { }
   ngOnInit(): void {
-    const token = this.cookieService.get("token");
-    if(token) this.isUser = true;
-    else this.isUser = false;
+    this.guard.canActivate();
+  }
+  ngOnDestroy(): void {
+    localStorage.removeItem("token");
   }
 
 }

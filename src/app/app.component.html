@@ -8,7 +8,7 @@
         <a routerLink="/transfer" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faExchangeAlt"></fa-icon><span class="menuSpan"> Transfer</span></a>
         <a routerLink="/history" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faHistory"></fa-icon><span class="menuSpan"> Historia produktu</span></a>
         <a routerLink="/packing" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faSignOutAlt"></fa-icon><span class="menuSpan"> Wysyłka</span></a>
-        <div [hidden]="!isUser">
+        <div [hidden]="!guard.islogged">
             <a routerLink="/auth" routerLinkActive="activeLink"><fa-icon class="iconeNav" [icon]="faUser"></fa-icon><span class="menuSpan">Wyloguj</span></a>
         </div>
     </nav>

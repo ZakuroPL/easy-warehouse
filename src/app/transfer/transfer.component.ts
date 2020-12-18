@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
   
@@ -17,29 +15,38 @@ export class TransferComponent implements OnInit {
 
   locations: any = [];
   transfers: any = [];
-  ngSelectedLocation = "";
-  selectedLocation = "";
-  selectedProduct = "";
-  selectedProductName = "";
-  selectedPcs = null;
-  locationFrom = "";
-  pcsToTransfer = null;
-  locationToTransfer = "";
-  locattionToTransferId = "";
+  ngSelectedLocation:string;
+  selectedLocation:string;
+  selectedProduct:string;
+  selectedProductName:string;
+  selectedPcs:number;
+  locationFrom:string;
+  pcsToTransfer:number;
+  locationToTransfer:string;
+  locattionToTransferId:string;
 
-  isGetSelectedProduct = false;
-  isWrongPcs = false;
-  isSuccess = false;
-  isNotFound = false;
-  isConnected = true;
+  isGetSelectedProduct:boolean = false;
+  isWrongPcs:boolean = false;
+  isSuccess:boolean = false;
+  isNotFound:boolean = false;
+  isConnected:boolean = true;
 
-  numberForCheck = 0;
+  numberForCheck:number;
 
   constructor(
     private apiService: ApiService,
-    private router: Router,
-    private cookieService: CookieService,
     ) { }
+
+  ngOnInit(): void {
+    this.apiService.getLocationList().subscribe(
+      data => {
+        this.locations = data;
+      },
+      error => {
+        console.log(error)
+      }
+    );
+  }
 
   getSelectedProduct(product, pcs, location, productName){
     this.selectedProduct = product;
@@ -107,39 +114,11 @@ export class TransferComponent implements OnInit {
         for (let transfer of this.transfers){
           if(transfer.location_name != this.selectedLocation || transfer.location_name == this.selectedLocation && transfer.pcs <= 0) this.numberForCheck++
         }
-        if(this.transfers.length == this.numberForCheck){
-          this.isNotFound = true;
-        }
-        else{
-          this.isNotFound = false;
-        }
+        this.isNotFound = this.transfers.length == this.numberForCheck ? true : false;
         this.ngSelectedLocation = "";
         this.isConnected = true;
       },
       error => console.log(error)
     );
   }
-
-
-
-
-
-
-  ngOnInit(): void {
-    const token = this.cookieService.get("token");
-    if(!token){
-      this.router.navigate(['/auth']);
-    }
-    this.apiService.getLocationList().subscribe(
-      data => {
-        this.locations = data;
-      },
-      error => {
-        console.log(error)
-        this.router.navigate(['/auth']);
-      }
-    );
-    
-  }//ngOnInit
-
 }

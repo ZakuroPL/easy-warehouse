@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -11,28 +9,40 @@ import { ApiService } from '../api.service';
 export class SupplyComponent implements OnInit {
 
   products: any = [];
-  selectedProductByIndex = "";
-  selectedProductByName = "";
-  selectedProductByEan = "";
-  selectedId = "";
+  selectedProductByIndex: string = "";
+  selectedProductByName: string = "";
+  selectedProductByEan: string = "";
+  selectedId: string;
   pcs: number;
   pcsForConfirm: number;
 
-  locationFrom = 1;
+  locationFrom: number = 1;
 
-  nameOfSelected = "";
+  nameOfSelected: string;
 
-  isMoreThanOne = false;
-  isAllEmpty = false;
-  isPcsEmpty = false;
-  isReadyForSupply = false;
-  isCreated = false;
+  isMoreThanOne:boolean = false;
+  isAllEmpty:boolean = false;
+  isPcsEmpty:boolean = false;
+  isReadyForSupply:boolean = false;
+  isCreated:boolean = false;
 
   constructor(
     private apiService: ApiService,
-    private router: Router,
-    private cookieService: CookieService,
   ) { }
+
+  ngOnInit(): void {
+    this.apiService.getProductList().subscribe(
+      data => {
+        this.products = data;
+        this.products.sort((a,b) =>{
+          return a.index-b.index;
+        });
+      },
+      error => {
+        console.log(error)
+      }
+    );
+  }
 
   beforeSupply(){
     if(this.selectedProductByName != "" && this.selectedProductByEan !="" ||
@@ -42,9 +52,9 @@ export class SupplyComponent implements OnInit {
     else if(this.pcs <= 0 || this.pcs == null) this.isPcsEmpty = true;
     else{
       for (let product of this.products){
-        if(this.selectedProductByIndex == product.index && this.selectedProductByName == "" && this.selectedProductByEan =="" ||
-        this.selectedProductByName == product.name && this.selectedProductByIndex == "" && this.selectedProductByEan =="" ||
-        this.selectedProductByEan == product.ean && this.selectedProductByName == "" && this.selectedProductByIndex ==""){
+        if(this.selectedProductByIndex == product.index && !this.isMoreThanOne ||
+        this.selectedProductByName == product.name && !this.isMoreThanOne ||
+        this.selectedProductByEan == product.ean && !this.isMoreThanOne){
           this.nameOfSelected = product.name;
           this.selectedId = product.id;
           this.isReadyForSupply = true;
@@ -78,27 +88,5 @@ export class SupplyComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
-  }
-    
-
-  ngOnInit(): void {
-    const token = this.cookieService.get("token");
-    if(!token){
-      this.router.navigate(['/auth']);
-    }
-    this.apiService.getProductList().subscribe(
-      data => {
-        this.products = data;
-        this.products.sort((a,b) =>{
-          return a.index-b.index;
-        });
-      },
-      error => {
-        console.log(error)
-        this.router.navigate(['/auth']);
-      }
-    );
-  }//ngOnInit
-
+    )}
 }

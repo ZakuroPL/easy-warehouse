@@ -1,25 +1,25 @@
 <h2>Dodaj produkt na stan magazynu</h2>
 
 
-<input placeholder="wprowadź id produktu" list="products1" [(ngModel)]="selectedProductByIndex">
+<input placeholder="wprowadź id produktu" list="products1" [(ngModel)]="selectedProductByIndex" (keyup.enter)="beforeSupply()">
 <datalist id="products1">
   <option *ngFor="let product of products" [value]="product.index">
   </option>
 </datalist>  
 
-<input placeholder="wprowadź nazwę produkt" list="products2" [(ngModel)]="selectedProductByName">
+<input placeholder="wprowadź nazwę produkt" list="products2" [(ngModel)]="selectedProductByName" (keyup.enter)="beforeSupply()">
 <datalist id="products2">
   <option *ngFor="let product of products" [value]="product.name">
   </option>
 </datalist>  
 
-<input placeholder="wprowadź EAN produkt" list="products3" [(ngModel)]="selectedProductByEan">
+<input placeholder="wprowadź EAN produkt" list="products3" [(ngModel)]="selectedProductByEan" (keyup.enter)="beforeSupply()">
 <datalist id="products3">
   <option *ngFor="let product of products" [value]="product.ean">
   </option>
 </datalist>  
 <br>
-<input id="inputPCSsupply" type="number" placeholder="ilość" [(ngModel)]="pcs"><br>
+<input id="inputPCSsupply" type="number" placeholder="ilość" [(ngModel)]="pcs" (keyup.enter)="beforeSupply()"><br>
 
 <br>
 <button (click)="beforeSupply()">Przyjmij na stan</button>

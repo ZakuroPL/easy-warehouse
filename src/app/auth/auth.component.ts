@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
+import { AuthGuard } from '../auth.guard';
 
 interface myToken{
   token: string;
@@ -17,35 +18,29 @@ export class AuthComponent implements OnInit {
     username: new FormControl(''),
     password: new FormControl('')
   });
-  isloggedIn = false;
-  isConnected= true;
-  isWrongPassword = false;
-  cookieGuide = "cookieGuide";
-  token = "";
-  isGuide = true;
+  isConnected: boolean= true;
+  isWrongPassword: boolean = false;
+  cookieGuide: string = "cookieGuide";
+  isGuide: boolean = true;
 
   constructor(
     private apiService: ApiService,
     private cookieService: CookieService,
+    public guard: AuthGuard
   ) { }
   ngOnInit(): void {
-    this.token = this.cookieService.get("token");
-    if(this.token){
-      this.isloggedIn = true;
-    }
     const guide = this.cookieService.get("guide");
     if(guide) this.isGuide = false;
   }
 
   saveForm(){
-    if(!this.token) this.isConnected = false;
+    this.isConnected = false;
     this.apiService.loginUser(this.loginForm.value).subscribe(
       (result: myToken) => {
-        this.cookieService.set("token", result.token)
-        console.log(result.token)
-        this.isloggedIn = true;
-        location.reload();
         this.isConnected = true;
+        this.isWrongPassword = false;
+        sessionStorage.setItem('token', result.token);
+        this.guard.canActivate();
       },
       error => {
         this.isWrongPassword = true;
@@ -55,10 +50,8 @@ export class AuthComponent implements OnInit {
     )
   }
   logOut(){
-    this.cookieService.delete("token");
-    this.isloggedIn = false;
-    this.isWrongPassword = false;
-    location.reload();
+    sessionStorage.removeItem("token");
+    this.guard.canActivate();
   }
 
   guide(){

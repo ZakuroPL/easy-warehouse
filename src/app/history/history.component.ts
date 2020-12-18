@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -13,19 +11,34 @@ export class HistoryComponent implements OnInit {
 
   products: any = [];
   history: any = [];
-  selectedProduct = "";
+  selectedProduct:string;
 
-  selectedProductByIndex = "";
-  selectedProductByName = "";
-  selectedProductByEan = "";
+  selectedProductByIndex:string = "";
+  selectedProductByName:string = "";
+  selectedProductByEan:string = "";
 
-  isMoreThanOne = false;
-  isAllEmpty = false;
-  isNotFound = false;
-  isConnected= true;
+  isMoreThanOne:boolean = false;
+  isAllEmpty:boolean = false;
+  isNotFound:boolean = false;
+  isConnected:boolean = true;
 
-  numberForCheck = 0;
+  numberForCheck:number = 0;
 
+  constructor(
+    private apiService: ApiService,
+  ) { }
+
+  ngOnInit(): void {
+    this.apiService.getProductList().subscribe(
+      data => {
+        this.products = data;
+        this.products.sort((a,b) =>{
+          return a.index-b.index;
+        });
+      },
+      error => console.log(error)
+    );
+  }
 
   getProductFromList(){
     this.isConnected = false;
@@ -41,20 +54,17 @@ export class HistoryComponent implements OnInit {
         this.selectedProduct = "";
         this.checkThis();
         for (let product of this.products){
-          if(this.selectedProductByIndex == product.index && this.selectedProductByName == "" && this.selectedProductByEan =="") this.selectedProduct = product.name
-          else if(this.selectedProductByName == product.name && this.selectedProductByIndex == "" && this.selectedProductByEan =="") this.selectedProduct = product.name
-          else if(this.selectedProductByEan == product.ean && this.selectedProductByName == "" && this.selectedProductByIndex =="")  this.selectedProduct = product.name
+          if(!this.isMoreThanOne){
+            if(this.selectedProductByIndex == product.index ||
+              this.selectedProductByName == product.name 
+              || this.selectedProductByEan == product.ean) this.selectedProduct = product.name;
+          }
         }
         this.numberForCheck = 0;
         for (let histor of this.history){
           if(histor.product_name != this.selectedProduct) this.numberForCheck++
         }
-        if(this.history.length == this.numberForCheck){
-          this.isNotFound = true;
-        }
-        else{
-          this.isNotFound = false;
-        }
+        this.isNotFound = this.history.length == this.numberForCheck;
 
         this.selectedProductByIndex = "";
         this.selectedProductByName = "";
@@ -63,7 +73,6 @@ export class HistoryComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.router.navigate(['/auth']);
       }
     );
   }
@@ -77,29 +86,4 @@ export class HistoryComponent implements OnInit {
     this.isMoreThanOne = false;
     this.isAllEmpty = false;
   }
-
-
-
-  constructor(
-    private apiService: ApiService,
-    private router: Router,
-    private cookieService: CookieService,
-  ) { }
-
-  ngOnInit(): void {
-    const token = this.cookieService.get("token");
-    if(!token){
-      this.router.navigate(['/auth']);
-    }
-    this.apiService.getProductList().subscribe(
-      data => {
-        this.products = data;
-        this.products.sort((a,b) =>{
-          return a.index-b.index;
-        });
-      },
-      error => console.log(error)
-    );
-  }//ngOnInit
-
 }

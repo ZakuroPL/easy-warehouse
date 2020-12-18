@@ -33,7 +33,7 @@
     <h2>Przygotowane do wysyłki:</h2>
     <p>nazwa: {{ selectedProductName }}</p>
     <p>ilość dostępna: {{ selectedPcs }}</p>
-    <input type="number" placeholder="ilość" [(ngModel)]="pcsToTransfer"><br>
+    <input type="number" placeholder="ilość" [(ngModel)]="pcsToTransfer" (keyup.enter)="tryTransfer()"><br>
     <br>
     <button class="button" (click)="tryTransfer()">Spakuj</button>
   </div>

@@ -3,9 +3,9 @@
 
 <input type="checkbox" [checked]="isEan" (change)="isEan = !isEan; eanNumber = null">produkt z numerem EAN<br>
 
-<input type="number" placeholder="index" [(ngModel)]="indexNumber"><br>
-<input type="text" placeholder="nazwa produktu" [(ngModel)]="nameString"><br>
-<input *ngIf="isEan" type="number" placeholder="EAN" [(ngModel)]="eanNumber"><br>
+<input type="number" placeholder="index" [(ngModel)]="indexNumber" (keyup.enter)="tryCreateProduct()"><br>
+<input type="text" placeholder="nazwa produktu" [(ngModel)]="nameString" (keyup.enter)="tryCreateProduct()"><br>
+<input *ngIf="isEan" type="number" placeholder="EAN" [(ngModel)]="eanNumber" (keyup.enter)="tryCreateProduct()"><br>
 
 <button (click)="tryCreateProduct()">dodaj produkt</button>
 
@@ -55,7 +55,7 @@
     </div>
 </div>
 <div [hidden]="isUniqueEan" class="visible">
-    <h2>Błąd: EAN {{eanNumber}} już istnieje.</h2>
+    <h2>Błąd: podany EAN już istnieje.</h2>
     <p class="center">Wprowadź unikatowy EAN dla tego produktu.</p>
     <div class="center">
         <button class="button" (click)="restart()">OK</button>

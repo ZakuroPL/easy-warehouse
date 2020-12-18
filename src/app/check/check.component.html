@@ -1,6 +1,6 @@
 <h2>Sprawdź zawartość lokalizacji</h2>
 
-<input placeholder="wprowadź lokalizacje" list="locations" [(ngModel)]="selectedLocation">
+<input placeholder="wprowadź lokalizacje" list="locations" [(ngModel)]="selectedLocation" (keyup.enter)="check()">
 <datalist id="locations">
   <option *ngFor="let location of locations" [value]="location.location">
   </option>

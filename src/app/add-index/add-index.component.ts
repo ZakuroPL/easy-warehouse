@@ -1,8 +1,4 @@
-import { identifierModuleUrl, ThrowStmt } from '@angular/compiler';
 import { Component, OnInit,  } from '@angular/core';
-import { Router } from '@angular/router';
-import { faSleigh } from '@fortawesome/free-solid-svg-icons';
-import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -12,11 +8,11 @@ import { ApiService } from '../api.service';
 })
 export class AddIndexComponent implements OnInit {
 
-  products: any = [];
+  products:any = [];
   isEan = false;
-  indexNumber: number;
+  indexNumber:number;
   nameString = "";
-  eanNumber: number;
+  eanNumber:number;
 
 
   isGoodLengthIndex = true;
@@ -28,23 +24,25 @@ export class AddIndexComponent implements OnInit {
   isOk = false;
   isConfirmCreated = false;
 
-
-
-  tryCreateProduct(){
-      if(this.indexNumber > 99 && this.indexNumber < 1000){
-        if(this.nameString.length >= 10){
-          if(this.isEan){
-            if(this.eanNumber > 999999999999 && this.eanNumber < 100000000000000) this.checkData();
-            else this.isGoodLengthEAN = false;
-          }
-          else{
-            this.eanNumber = this.indexNumber
-            this.checkData();
-          }
-        }
-        else this.isGoodLengthName = false;
+  ngOnInit(): void {
+    this.apiService.getProductList().subscribe(
+      data => {
+        this.products = data;
+      },
+      error => {
+        console.log(error)
       }
-      else this.isGoodLengthIndex = false;
+    );
+  }
+  tryCreateProduct(){
+    if (!this.indexNumber || this.indexNumber < 99 || this.indexNumber > 999) this.isGoodLengthIndex = false;
+    else if (this.nameString.length < 10) this.isGoodLengthName = false;
+    else if (this.isEan && this.eanNumber < 1000000000000 ||this.isEan && this.eanNumber >= 10000000000000) this.isGoodLengthEAN = false;
+    else if (!this.isEan){
+      this.eanNumber = this.indexNumber
+      this.checkData();
+    }
+    else this.checkData();
   };
   checkData(){
     for(let product of this.products){
@@ -59,6 +57,9 @@ export class AddIndexComponent implements OnInit {
         console.log(result);
         this.isOk = false;
         this.isConfirmCreated = true;
+        this.indexNumber = null;
+        this.nameString = '';
+        this.eanNumber = null;
       },
       error => {
         console.log(error);
@@ -73,32 +74,12 @@ export class AddIndexComponent implements OnInit {
     this.isUniqueEan = true;
     this.isOk = false;
     this.isConfirmCreated = false;
-    this.indexNumber = null;
-    this.nameString = '';
-    this.eanNumber = null;
   }
 
 
   constructor(
     private apiService: ApiService,
-    private router: Router,
-    private cookieService: CookieService,
   ) { }
-
-  ngOnInit(): void {
-    const token = this.cookieService.get("token");
-    if(!token){
-      this.router.navigate(['/auth']);
-    }
-    this.apiService.getProductList().subscribe(
-      data => {
-        this.products = data;
-      },
-      error => {
-        console.log(error)
-      }
-    );
-  }//ngOnInit
 
 
 }

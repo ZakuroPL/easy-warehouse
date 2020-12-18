@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -14,19 +12,36 @@ export class SearchComponent implements OnInit {
   products: any = [];
   transfers: any = [];
 
-  selectedProduct = "";
-  myProduct = "";
+  selectedProduct:string;
+  myProduct:string;
 
   numberForCheck = 0;
 
-  selectedProductByIndex = "";
-  selectedProductByName = "";
-  selectedProductByEan = "";
+  selectedProductByIndex:string = "";
+  selectedProductByName:string = "";
+  selectedProductByEan:string = "";
 
-  isMoreThanOne = false;
-  isAllEmpty = false;
-  isNotFound = false;
-  isConnected= true;
+  isMoreThanOne:boolean = false;
+  isAllEmpty:boolean = false;
+  isNotFound:boolean = false;
+  isConnected:boolean = true;
+  
+  constructor(
+    private apiService: ApiService) { }
+
+  ngOnInit(): void {
+    this.apiService.getProductList().subscribe(
+      data => {
+        this.products = data;
+        this.products.sort((a,b) =>{
+          return a.index-b.index;
+        });
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
 
   getProductFromList(){
     this.isConnected = false;
@@ -49,12 +64,7 @@ export class SearchComponent implements OnInit {
         for (let transfer of this.transfers){
           if(transfer.product_name != this.myProduct || transfer.product_name == this.myProduct && transfer.pcs <= 0) this.numberForCheck++
         }
-        if(this.transfers.length == this.numberForCheck){
-          this.isNotFound = true;
-        }
-        else{
-          this.isNotFound = false;
-        }
+        this.isNotFound = this.transfers.length == this.numberForCheck;
 
         this.selectedProductByIndex = "";
         this.selectedProductByName = "";
@@ -75,33 +85,4 @@ export class SearchComponent implements OnInit {
     this.isMoreThanOne = false;
     this.isAllEmpty = false;
   }
-
-
-
-  constructor(
-    private apiService: ApiService,
-    private router: Router,
-    private cookieService: CookieService,
-  ) { }
-
-  ngOnInit(): void {
-    const token = this.cookieService.get("token");
-    if(!token){
-      this.router.navigate(['/auth']);
-    }
-    this.apiService.getProductList().subscribe(
-      data => {
-        this.products = data;
-        this.products.sort((a,b) =>{
-          return a.index-b.index;
-        });
-      },
-      error => {
-        console.log(error)
-        this.router.navigate(['/auth']);
-      }
-    );
-    
-  }//ngOnInit
-
 }

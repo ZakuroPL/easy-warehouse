@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -15,25 +13,35 @@ export class PackingComponent implements OnInit {
   faSignOutAlt = faSignOutAlt;
 
   transfers: any = [];
-  selectedProduct = "";
-  selectedProductName = "";
-  selectedPcs = null;
-  pcsToTransfer = null;
+  selectedProduct:string = "";
+  selectedProductName:string = "";
+  selectedPcs:number;
+  pcsToTransfer:number;
 
-  locationFrom = 2;
-  numberForCheck = 0;
+  locationFrom:number = 2;
+  numberForCheck:number = 0;
 
-  isGetSelectedProduct = false;
-  isWrongPcs = false;
-  isSuccess = false;
-  isNotFound = false;
-  isConnected = true;
+  isGetSelectedProduct:boolean = false;
+  isWrongPcs:boolean = false;
+  isSuccess:boolean = false;
+  isNotFound:boolean = false;
+  isConnected:boolean = false;
 
   constructor(
     private apiService: ApiService,
-    private router: Router,
-    private cookieService: CookieService,
     ) { }
+
+  ngOnInit(): void {
+    this.apiService.getTransfers().subscribe(
+      data => {
+        this.transfers = data;
+        this.check();
+      },
+      error => {
+        console.log(error)
+      }
+    );
+  }
 
   getSelectedProduct(product, pcs, productName){
     this.selectedProduct = product;
@@ -87,35 +95,9 @@ export class PackingComponent implements OnInit {
     for (let transfer of this.transfers){
       if(transfer.location != this.locationFrom || transfer.location == this.locationFrom && transfer.pcs <= 0) this.numberForCheck++
     }
-    if(this.transfers.length == this.numberForCheck){
-      this.isNotFound = true;
-    }
-    else{
-      this.isNotFound = false;
-    }
+    this.isNotFound = this.transfers.length == this.numberForCheck;
     this.isConnected = true;
   }
-
-
-
-
-  ngOnInit(): void {
-    this.isConnected = false;
-    const token = this.cookieService.get("token");
-    if(!token){
-      this.router.navigate(['/auth']);
-    }
-    this.apiService.getTransfers().subscribe(
-      data => {
-        this.transfers = data;
-        this.check();
-      },
-      error => {
-        console.log(error)
-        this.router.navigate(['/auth']);
-      }
-    );
-  }//ngOnInit
 
 }
 

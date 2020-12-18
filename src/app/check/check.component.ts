@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -12,34 +10,26 @@ export class CheckComponent implements OnInit {
 
   locations: any = [];
   transfers: any = [];
-  selectedLocation = "";
-  myLocation = "";
+  selectedLocation:string;
+  myLocation:string;
 
-  numberForCheck = 0;
-  isNotFound = false;
-  isConnected= true;
+  numberForCheck:number = 0;
+  isNotFound:boolean = false;
+  isConnected:boolean = true;
   
   constructor(
     private apiService: ApiService,
-    private router: Router,
-    private cookieService: CookieService,
   ) { }
 
 
   ngOnInit(): void {
-    this.isNotFound = false;
-    const token = this.cookieService.get("token");
-    if(!token){
-      this.router.navigate(['/auth']);
-    }
     this.apiService.getLocationList().subscribe(
       data => {
         this.locations = data;
       },
       error => console.log(error)
     );
-    
-  }//ngOnInit
+  }
 
   check(){
     this.numberForCheck = 0;
@@ -52,18 +42,12 @@ export class CheckComponent implements OnInit {
         for (let transfer of this.transfers){
           if(transfer.location_name != this.myLocation || transfer.location_name == this.myLocation && transfer.pcs <= 0) this.numberForCheck++
         }
-        if(this.transfers.length == this.numberForCheck){
-          this.isNotFound = true;
-        }
-        else{
-          this.isNotFound = false;
-        }
+        this.isNotFound = this.transfers.length == this.numberForCheck ? true : false;
         this.selectedLocation = "";
         this.isConnected = true;
       },
       error => {
         console.log(error)
-        this.router.navigate(['/auth']);
       }
     );
   }

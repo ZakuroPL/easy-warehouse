@@ -1,13 +1,13 @@
-<div [hidden]="isloggedIn">
+<div [hidden]="guard.islogged">
     <h2>Logowanie do systemu</h2>
     <p style="color:red" [hidden]="!isWrongPassword"><b>Podałeś niepoprawne dane logowania!</b></p>
 <form [formGroup]="loginForm" (ngSubmit)="saveForm()">
-    <input type="text" formControlName="username"><br>
+    <input type="text" formControlName="username" oninput="this.value = this.value.toLowerCase()"><br>
     <input type="password" formControlName="password"><br>
     <button type="submit">zaloguj się</button>
 </form>
 </div>
-<div [hidden]="!isloggedIn">
+<div [hidden]="!guard.islogged">
     <h2>Jesteś zalogowany</h2>
     <button (click)="logOut()">wyloguj</button>
 </div>

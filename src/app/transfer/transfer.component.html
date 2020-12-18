@@ -1,6 +1,6 @@
 <h2>Transfer produktu na inna lokalizacje</h2>
 
-<input placeholder="wprowadź lokalizacje" list="locations" [(ngModel)]="ngSelectedLocation">
+<input placeholder="wprowadź lokalizacje" list="locations" [(ngModel)]="ngSelectedLocation" (keyup.enter)="check()">
 <datalist id="locations">
   <option *ngFor="let location of locations" [value]="location.location">
   </option>
