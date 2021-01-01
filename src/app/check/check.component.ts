@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
+import { Transfer, sortTransferForTransfer } from '../models/transfer';
+import { Location } from '../models/location';
 
 @Component({
   selector: 'app-check',
@@ -8,12 +10,11 @@ import { ApiService } from '../api.service';
 })
 export class CheckComponent implements OnInit {
 
-  locations: any = [];
-  transfers: any = [];
+  locations:Location[];
+  transfers:Transfer[];
   selectedLocation:string;
   myLocation:string;
 
-  numberForCheck:number = 0;
   isNotFound:boolean = false;
   isConnected:boolean = true;
   
@@ -32,17 +33,14 @@ export class CheckComponent implements OnInit {
   }
 
   check(){
-    this.numberForCheck = 0;
     this.isNotFound = false;
     this.isConnected = false;
     this.myLocation = this.selectedLocation;
     this.apiService.getTransfers().subscribe(
       data => {
-        this.transfers = data;
-        for (let transfer of this.transfers){
-          if(transfer.location_name != this.myLocation || transfer.location_name == this.myLocation && transfer.pcs <= 0) this.numberForCheck++
-        }
-        this.isNotFound = this.transfers.length == this.numberForCheck ? true : false;
+        data.sort(sortTransferForTransfer);
+        this.transfers = data.filter(data => data.pcs > 0 && data.location_name == this.selectedLocation);
+        this.isNotFound = this.transfers.length == 0;
         this.selectedLocation = "";
         this.isConnected = true;
       },

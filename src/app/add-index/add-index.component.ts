@@ -1,5 +1,6 @@
 import { Component, OnInit,  } from '@angular/core';
 import { ApiService } from '../api.service';
+import { Product, sortProduct } from '../models/product';
 
 @Component({
   selector: 'app-add-index',
@@ -8,7 +9,7 @@ import { ApiService } from '../api.service';
 })
 export class AddIndexComponent implements OnInit {
 
-  products:any = [];
+  products:Product[] = [];
   isEan = false;
   indexNumber:number;
   nameString = "";
@@ -24,15 +25,12 @@ export class AddIndexComponent implements OnInit {
   isOk = false;
   isConfirmCreated = false;
 
+  constructor(
+    private apiService: ApiService,
+  ) { }
+
   ngOnInit(): void {
-    this.apiService.getProductList().subscribe(
-      data => {
-        this.products = data;
-      },
-      error => {
-        console.log(error)
-      }
-    );
+    this.getProductList();
   }
   tryCreateProduct(){
     if (!this.indexNumber || this.indexNumber < 99 || this.indexNumber > 999) this.isGoodLengthIndex = false;
@@ -74,12 +72,18 @@ export class AddIndexComponent implements OnInit {
     this.isUniqueEan = true;
     this.isOk = false;
     this.isConfirmCreated = false;
+    this.getProductList();
   }
-
-
-  constructor(
-    private apiService: ApiService,
-  ) { }
+  getProductList(){
+    this.apiService.getProductList().subscribe(
+      data => {
+        this.products = data.sort(sortProduct);
+      },
+      error => {
+        console.log(error)
+      }
+    );
+  }
 
 
 }

@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { History } from './models/history';
+import { Transfer } from './models/transfer';
+import { Product } from './models/product';
+import { Location } from './models/location';
 
 @Injectable({
   providedIn: 'root'
@@ -21,22 +25,22 @@ export class ApiService {
   ) { }
   
   getTransfers() {
-    return  this.httpClient.get(`${this.apiURL}transfers/`, {headers: this.getToken()});
+    return  this.httpClient.get<Transfer[]>(`${this.apiURL}transfers/`, {headers: this.getToken()});
   }
   getLocationList() {
-    return this.httpClient.get(`${this.apiURL}locations/`, {headers: this.getToken()})
+    return this.httpClient.get<Location[]>(`${this.apiURL}locations/`, {headers: this.getToken()})
   }
   getProductList() {
-    return this.httpClient.get(`${this.apiURL}products/`, {headers: this.getToken()})
+    return this.httpClient.get<Product[]>(`${this.apiURL}products/`, {headers: this.getToken()})
   }
   getHistory(){
-    return this.httpClient.get(`${this.apiURL}history/`, {headers: this.getToken()})
+    return this.httpClient.get<History[]>(`${this.apiURL}history/`, {headers: this.getToken()})
   }
   postNewProduct(index: number, name: string, ean: number) {
     const newProduct = JSON.stringify({index, name, ean});
     return this.httpClient.post(`${this.apiURL}products/`, newProduct, {headers: this.getToken()})
   }
-  postSupplyProduct(locationFrom: number, product: string, pcs: number){
+  postSupplyProduct(locationFrom: number, product: number, pcs: number){
     const json = JSON.stringify({product, pcs, locationFrom});
     return this.httpClient.post(`${this.apiURL}locations/1/add_transfer/`, json, {headers: this.getToken()})
   }

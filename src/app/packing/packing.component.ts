@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '../api.service';
+import { filterTransferForPacking, Transfer } from '../models/transfer';
 
 @Component({
   selector: 'app-packing',
@@ -12,14 +13,12 @@ export class PackingComponent implements OnInit {
 
   faSignOutAlt = faSignOutAlt;
 
-  transfers: any = [];
-  selectedProduct:string = "";
-  selectedProductName:string = "";
+  transfers:Transfer[];
+  selectedProduct:string;
+  selectedProductName:string;
   selectedPcs:number;
   pcsToTransfer:number;
-
   locationFrom:number = 2;
-  numberForCheck:number = 0;
 
   isGetSelectedProduct:boolean = false;
   isWrongPcs:boolean = false;
@@ -32,15 +31,7 @@ export class PackingComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.apiService.getTransfers().subscribe(
-      data => {
-        this.transfers = data;
-        this.check();
-      },
-      error => {
-        console.log(error)
-      }
-    );
+    this.refreshData();
   }
 
   getSelectedProduct(product, pcs, productName){
@@ -69,34 +60,24 @@ export class PackingComponent implements OnInit {
       }
     )
   }
-
   ok(){
     this.isGetSelectedProduct = false;
     this.isWrongPcs = false;
     this.isSuccess = false;
-    this.refreshData();
     this.pcsToTransfer = null;
+    this.refreshData();
   }
   refreshData(){
+    this.isNotFound = false;
     this.isConnected = false;
     this.apiService.getTransfers().subscribe(
       data => {
-        this.transfers = data;
-        this.check();
+        this.transfers = data.filter(filterTransferForPacking);
+        this.isConnected = true;
+        this.isNotFound = this.transfers.length == 0;
       },
       error => console.log(error)
     );
-  }
-
-
-
-  check(){
-    this.numberForCheck = 0;
-    for (let transfer of this.transfers){
-      if(transfer.location != this.locationFrom || transfer.location == this.locationFrom && transfer.pcs <= 0) this.numberForCheck++
-    }
-    this.isNotFound = this.transfers.length == this.numberForCheck;
-    this.isConnected = true;
   }
 
 }

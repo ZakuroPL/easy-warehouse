@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
+import { Product, sortProduct } from '../models/product';
 
 @Component({
   selector: 'app-supply',
@@ -8,12 +9,12 @@ import { ApiService } from '../api.service';
 })
 export class SupplyComponent implements OnInit {
 
-  products: any = [];
-  selectedProductByIndex: string = "";
-  selectedProductByName: string = "";
-  selectedProductByEan: string = "";
-  selectedId: string;
-  pcs: number;
+  products:Product[] = [];
+  selectedProductByIndex:number;
+  selectedProductByName:string;
+  selectedProductByEan:number;
+  selectedId:number;
+  pcs:number;
   pcsForConfirm: number;
 
   locationFrom: number = 1;
@@ -33,10 +34,7 @@ export class SupplyComponent implements OnInit {
   ngOnInit(): void {
     this.apiService.getProductList().subscribe(
       data => {
-        this.products = data;
-        this.products.sort((a,b) =>{
-          return a.index-b.index;
-        });
+        this.products = data.sort(sortProduct);
       },
       error => {
         console.log(error)
@@ -45,10 +43,10 @@ export class SupplyComponent implements OnInit {
   }
 
   beforeSupply(){
-    if(this.selectedProductByName != "" && this.selectedProductByEan !="" ||
-    this.selectedProductByName != "" && this.selectedProductByIndex !="" ||
-    this.selectedProductByEan != "" && this.selectedProductByIndex !="") this.isMoreThanOne = true;
-    else if(this.selectedProductByName == "" && this.selectedProductByEan =="" && this.selectedProductByIndex == "") this.isAllEmpty = true;
+    if(this.selectedProductByName  && this.selectedProductByEan ||
+    this.selectedProductByName && this.selectedProductByIndex ||
+    this.selectedProductByEan && this.selectedProductByIndex) this.isMoreThanOne = true;
+    else if(!this.selectedProductByName && !this.selectedProductByEan && !this.selectedProductByIndex) this.isAllEmpty = true;
     else if(this.pcs <= 0 || this.pcs == null) this.isPcsEmpty = true;
     else{
       for (let product of this.products){
@@ -72,10 +70,10 @@ export class SupplyComponent implements OnInit {
     this.isPcsEmpty = false;
     this.isReadyForSupply = false;
     this.isCreated = false;
-    this.selectedProductByIndex = "";
+    this.selectedProductByIndex = null;
     this.selectedProductByName = "";
-    this.selectedProductByEan = "";
-    this. selectedId = "";
+    this.selectedProductByEan = null
+    this. selectedId = null
     this.pcsForConfirm = this.pcs;
     this.pcs = null;
   }

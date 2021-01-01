@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
+import { Product, sortProduct } from '../models/product';
+import { Transfer, sortTransferForTransfer } from '../models/transfer';
 
 @Component({
   selector: 'app-search',
@@ -9,17 +11,15 @@ import { ApiService } from '../api.service';
 export class SearchComponent implements OnInit {
 
 
-  products: any = [];
-  transfers: any = [];
+  products:Product[];
+  transfers:Transfer[];
 
   selectedProduct:string;
   myProduct:string;
 
-  numberForCheck = 0;
-
-  selectedProductByIndex:string = "";
-  selectedProductByName:string = "";
-  selectedProductByEan:string = "";
+  selectedProductByIndex:number;
+  selectedProductByName:string;
+  selectedProductByEan:number;
 
   isMoreThanOne:boolean = false;
   isAllEmpty:boolean = false;
@@ -32,10 +32,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.apiService.getProductList().subscribe(
       data => {
-        this.products = data;
-        this.products.sort((a,b) =>{
-          return a.index-b.index;
-        });
+        this.products = data.sort(sortProduct);
       },
       error => {
         console.log(error);
@@ -46,41 +43,32 @@ export class SearchComponent implements OnInit {
   getProductFromList(){
     this.isConnected = false;
     this.isNotFound = false;
-    this.selectedProduct = "";
+    for (let product of this.products){
+      if(!this.isMoreThanOne){
+        if(this.selectedProductByIndex == product.index ||
+            this.selectedProductByName == product.name 
+            || this.selectedProductByEan == product.ean) this.selectedProduct = product.name;
+        }
+    }
     this.apiService.getTransfers().subscribe(
       data => {
-        this.transfers = data;
-        this.transfers.sort((a,b) =>{
-          return b.pcs-a.pcs;
-        });
-        this.checkThis();
-        for (let product of this.products){
-          if(this.selectedProductByIndex == product.index && this.selectedProductByName == "" && this.selectedProductByEan =="") this.selectedProduct = product.name
-          else if(this.selectedProductByName == product.name && this.selectedProductByIndex == "" && this.selectedProductByEan =="") this.selectedProduct = product.name
-          else if(this.selectedProductByEan == product.ean && this.selectedProductByName == "" && this.selectedProductByIndex =="")  this.selectedProduct = product.name
-        }
-        this.numberForCheck = 0;
-        this.myProduct = this.selectedProduct;
-        for (let transfer of this.transfers){
-          if(transfer.product_name != this.myProduct || transfer.product_name == this.myProduct && transfer.pcs <= 0) this.numberForCheck++
-        }
-        this.isNotFound = this.transfers.length == this.numberForCheck;
-
-        this.selectedProductByIndex = "";
-        this.selectedProductByName = "";
-        this.selectedProductByEan = "";
+        data.sort(sortTransferForTransfer);
+        this.transfers = data.filter(data => data.product_name == this.selectedProduct && data.pcs > 0);
         this.isConnected = true;
+        this.isNotFound = this.transfers.length == 0;
+        this.selectedProductByIndex = null;
+        this.selectedProductByName = "";
+        this.selectedProductByEan = null;
       },
       error => console.log(error)
-    );
-    
+    )
   }
   checkThis(){
-    if(this.selectedProductByName != "" && this.selectedProductByEan !="" ||
-    this.selectedProductByName != "" && this.selectedProductByIndex !="" ||
-    this.selectedProductByEan != "" && this.selectedProductByIndex !="") this.isMoreThanOne = true;
-    if(this.selectedProductByName == "" && this.selectedProductByEan =="" && this.selectedProductByIndex == "") this.isAllEmpty = true;
-  }
+    if(this.selectedProductByName && this.selectedProductByEan ||
+    this.selectedProductByName && this.selectedProductByIndex ||
+    this.selectedProductByEan && this.selectedProductByIndex) this.isMoreThanOne = true;
+    else if(!this.selectedProductByName && !this.selectedProductByEan && !this.selectedProductByIndex) this.isAllEmpty = true;
+    else this.getProductFromList();  }
   ok(){
     this.isMoreThanOne = false;
     this.isAllEmpty = false;

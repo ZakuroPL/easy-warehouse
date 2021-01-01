@@ -1,13 +1,14 @@
 <h2>Transfer produktu na inna lokalizacje</h2>
 
-<input placeholder="wprowadź lokalizacje" list="locations" [(ngModel)]="ngSelectedLocation" (keyup.enter)="check()">
+<input placeholder="wprowadź lokalizacje" list="locations" [(ngModel)]="selectedLocation" (keyup.enter)="refreshData()">
 <datalist id="locations">
   <option *ngFor="let location of locations" [value]="location.location">
   </option>
 </datalist>  
 <br>
-<button (click)="check()">znajdź produkt</button>
+<button (click)="refreshData()">znajdź produkt</button>
 <br><br>
+lokalizacja: {{locationName}}
 <div class="pc">
     <table>
       <tr>
@@ -17,10 +18,10 @@
         <td>&nbsp;</td>
       </tr>
       <tr class="border" *ngFor="let transfer of transfers">   
-        <td *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0 && isConnected">{{transfer.product_index}}</td>
-        <td *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0 && isConnected">{{transfer.product_name}}</td>
-        <td *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0 && isConnected">{{transfer.pcs}}</td>
-        <td *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0 && isConnected"><fa-icon class="colorBlue" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></td>
+        <td>{{transfer.product_index}}</td>
+        <td>{{transfer.product_name}}</td>
+        <td>{{transfer.pcs}}</td>
+        <td><fa-icon class="colorBlue" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></td>
       </tr>
     </table>
     <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
@@ -30,9 +31,9 @@
 <div class="mobile">
   <p *ngIf="selectedLocation"><b>nazwa produktu:</b> {{selectedLocation}}</p>
   <div *ngFor="let transfer of transfers">
-    <p *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0">index: {{transfer.product_index}}</p>
-    <p *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0">nazwa: {{transfer.product_name}}</p>
-    <p class="border" *ngIf="transfer.location_name == selectedLocation && transfer.pcs > 0">ilość: {{transfer.pcs}}<fa-icon class="colorBlue mobileFa" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></p>
+    <p>index: {{transfer.product_index}}</p>
+    <p>nazwa: {{transfer.product_name}}</p>
+    <p class="border">ilość: {{transfer.pcs}}<fa-icon class="colorBlue mobileFa" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></p>
   </div>
   <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
 </div>

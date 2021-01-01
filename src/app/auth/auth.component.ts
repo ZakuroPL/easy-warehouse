@@ -41,6 +41,7 @@ export class AuthComponent implements OnInit {
         this.isWrongPassword = false;
         sessionStorage.setItem('token', result.token);
         this.guard.canActivate();
+        this.loginForm.reset();
       },
       error => {
         this.isWrongPassword = true;

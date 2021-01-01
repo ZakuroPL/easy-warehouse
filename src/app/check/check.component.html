@@ -17,10 +17,10 @@
       <td>lokalizacja</td>
     </tr>
     <tr class="border" *ngFor="let transfer of transfers">   
-      <td *ngIf="transfer.location_name == myLocation && transfer.pcs > 0 && isConnected">{{transfer.product_index}}</td>
-      <td *ngIf="transfer.location_name == myLocation && transfer.pcs > 0 && isConnected">{{transfer.product_name}}</td>
-      <td *ngIf="transfer.location_name == myLocation && transfer.pcs > 0 && isConnected">{{transfer.pcs}}</td>
-      <td *ngIf="transfer.location_name == myLocation && transfer.pcs > 0 && isConnected">{{transfer.location_name}}</td>
+      <td>{{transfer.product_index}}</td>
+      <td>{{transfer.product_name}}</td>
+      <td>{{transfer.pcs}}</td>
+      <td>{{transfer.location_name}}</td>
     </tr>
   </table>
   <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
@@ -29,9 +29,9 @@
 <div class="mobile">
   <p *ngIf="myLocation"><b>nazwa produktu:</b> {{myLocation}}</p>
   <div *ngFor="let transfer of transfers">
-    <p *ngIf="transfer.location_name == myLocation && transfer.pcs > 0">index: {{transfer.product_index}}</p>
-    <p *ngIf="transfer.location_name == myLocation && transfer.pcs > 0">nazwa: {{transfer.product_name}}</p>
-    <p class="border" *ngIf="transfer.location_name == myLocation && transfer.pcs > 0">ilość: {{transfer.pcs}}</p>
+    <p>index: {{transfer.product_index}}</p>
+    <p>nazwa: {{transfer.product_name}}</p>
+    <p class="border">ilość: {{transfer.pcs}}</p>
   </div>
   <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
 </div>
