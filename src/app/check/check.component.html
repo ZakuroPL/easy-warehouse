@@ -8,30 +8,17 @@
 <br>
 <button (click)="check()">znajdź produkt</button>
 <br><br>
-<div class="pc">
-  <table>
-    <tr>
-      <td id="index">index</td>
-      <td id="name">nazwa produktu</td>
-      <td id="pcs">ilość</td>
-      <td>lokalizacja</td>
-    </tr>
-    <tr class="border" *ngFor="let transfer of transfers">   
-      <td>{{transfer.product_index}}</td>
-      <td>{{transfer.product_name}}</td>
-      <td>{{transfer.pcs}}</td>
-      <td>{{transfer.location_name}}</td>
-    </tr>
-  </table>
-  <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
-  <p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+<div class="pc table">
+  <div>index:</div>
+  <div>nazwa produktu:</div>
+  <div>ilość:</div>
+  <div>lokalizacja:</div>
 </div>
-<div class="mobile">
-  <p *ngIf="myLocation"><b>nazwa produktu:</b> {{myLocation}}</p>
-  <div *ngFor="let transfer of transfers">
-    <p>index: {{transfer.product_index}}</p>
-    <p>nazwa: {{transfer.product_name}}</p>
-    <p class="border">ilość: {{transfer.pcs}}</p>
-  </div>
-  <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
+<div class="border table" *ngFor="let transfer of transfers">
+  <div><span class="mobile">index: </span>{{transfer.product_index}}</div>
+  <div><span class="mobile">nazwa produktu: </span>{{transfer.product_name}}</div>
+  <div><span class="mobile">ilość: </span>{{transfer.pcs}}</div>
+  <div><span class="mobile">lokalizacja: </span>{{transfer.location_name}}</div>
 </div>
+<p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
+<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>

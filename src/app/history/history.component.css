@@ -2,18 +2,19 @@ input {
     margin-bottom: 30px;
     margin-right: 20px;
 }
-#name{
-    min-width: 200px;
+.table {
+    grid-template-columns: 200px 50px 100px 100px 100px 100px
 }
-#pcs{
-    min-width: 60px;
-}
-.location{
-    min-width: 80px;
-}
-#date{
-    min-width: 100px;
-}
-#user{
-    min-width: 50px;
+@media only screen and (max-width: 850px) {
+    .table{
+        width: auto;
+        grid-template-columns: auto;
+        grid-template-rows: auto auto auto auto auto auto;
+    }
+    .mobile{
+        display: inline;
+      }
+      .pc {
+          display: none;
+      }
 }

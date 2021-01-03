@@ -5,16 +5,24 @@ input {
 #inputPCSsupply{
     margin: 0px;
 }
-#name{
-    min-width: 200px;
-}
-#pcs{
-    min-width: 60px;
-}
-#index{
-    min-width: 60px;
-}
 .colorBlue{
     color: #248DC1;
     cursor: pointer;
+}
+.table{
+    width: -webkit-min-content;
+    width: -moz-min-content;
+    width: min-content;
+    display: grid;
+    grid-template-columns: 50px 200px 50px 30px
+  }
+@media only screen and (max-width: 650px) {
+    .table {
+        width: auto;
+        grid-template-columns: auto;
+        grid-template-rows: auto auto auto auto;
+      }
+    .pc{
+        display: none;
+      }
 }

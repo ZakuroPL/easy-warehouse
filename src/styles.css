@@ -18,9 +18,6 @@ button:active{
 button:focus{
   outline: 0px;
 }
-table{
-  border-collapse:collapse
-}
 .border {
   border-bottom: 1px solid black;
 }
@@ -83,8 +80,15 @@ input[type=number] {
 .pc{
   display: block;
 }
+.table{
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+  display: grid;
+  grid-template-columns: 50px 200px 50px 100px
+}
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 650px) {
   .visible{
     top: 30px;
     left: 5%;
@@ -96,7 +100,7 @@ input[type=number] {
     margin-top: 20px;
   }
   .mobile{
-    display: block;
+    display: inline;
   }
   .pc{
     display: none;
@@ -106,5 +110,10 @@ input[type=number] {
   }
   .mobileFa{
     padding-left: 20px;
+  }
+  .table {
+    width: auto;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto auto;
   }
 }

@@ -2,9 +2,20 @@ input {
     margin-bottom: 30px;
     margin-right: 20px;
 }
-#name {
-    min-width: 200px;
-}
-#pcs {
-    min-width: 60px;
+.table{
+    width: -webkit-min-content;
+    width: -moz-min-content;
+    width: min-content;
+    display: grid;
+    grid-template-columns: 200px 50px 100px
+  }
+@media only screen and (max-width: 650px) {
+    .table {
+        width: auto;
+        grid-template-columns: auto;
+        grid-template-rows: auto auto auto;
+      }
+    .pc{
+        display: none;
+      }
 }

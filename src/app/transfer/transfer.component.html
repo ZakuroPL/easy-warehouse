@@ -8,35 +8,21 @@
 <br>
 <button (click)="refreshData()">znajdź produkt</button>
 <br><br>
-lokalizacja: {{locationName}}
-<div class="pc">
-    <table>
-      <tr>
-        <td id="index">index</td>
-        <td id="name">nazwa produktu</td>
-        <td id="pcs">ilość</td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr class="border" *ngFor="let transfer of transfers">   
-        <td>{{transfer.product_index}}</td>
-        <td>{{transfer.product_name}}</td>
-        <td>{{transfer.pcs}}</td>
-        <td><fa-icon class="colorBlue" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></td>
-      </tr>
-    </table>
-    <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
-    <p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
-  </div>
-
-<div class="mobile">
-  <p *ngIf="selectedLocation"><b>nazwa produktu:</b> {{selectedLocation}}</p>
-  <div *ngFor="let transfer of transfers">
-    <p>index: {{transfer.product_index}}</p>
-    <p>nazwa: {{transfer.product_name}}</p>
-    <p class="border">ilość: {{transfer.pcs}}<fa-icon class="colorBlue mobileFa" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></p>
-  </div>
-  <p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
+lokalizacja: {{locationName}}<br><br>
+<div class="pc table">
+  <div>index:</div>
+  <div>nazwa produktu:</div>
+  <div>ilość:</div>
+  <div>&nbsp;</div>
 </div>
+<div class="border table" *ngFor="let transfer of transfers">
+  <div><span class="mobile">index: </span>{{transfer.product_index}}</div>
+  <div><span class="mobile">nazwa produktu: </span>{{transfer.product_name}}</div>
+  <div><span class="mobile">ilość: </span>{{transfer.pcs}}</div>
+  <div><fa-icon class="colorBlue" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></div>
+</div>
+<p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
+<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
 
 
 

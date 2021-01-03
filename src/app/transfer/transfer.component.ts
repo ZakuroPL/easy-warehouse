@@ -76,6 +76,7 @@ export class TransferComponent implements OnInit {
       },
       error => {
         console.log(error);
+        this.isWrongPcs = true;
       }
     )
   }

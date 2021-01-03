@@ -1,4 +1,4 @@
-<h2>Znajdź lokalizację dla produktu</h2>
+<h2>Historia produktu</h2>
 
 <input placeholder="wprowadź id produktu" list="products1" [(ngModel)]="selectedProductByIndex" (keyup.enter)="checkThis()">
 <datalist id="products1">
@@ -21,55 +21,34 @@
 <br>
 <button (click)="checkThis()">znajdź produkt</button>
 <br><br>
-<div class="pc">
-    <table>
-      <tr>
-        <td id="name">nazwa produktu:</td>
-        <td id="pcs">ilość:</td>
-        <td class="location">z:</td>
-        <td class="location">do:</td>
-        <td id="date">data:</td>
-        <td id="user">użytkownik:</td>
-      </tr>
-      <tr class="border" *ngFor="let transfer of history">      
-        <td>{{transfer.product_name}}</td>
-        <td>{{transfer.pcs}}</td>
-        <td>
-          <span *ngIf="transfer.location_name_from != transfer.location_name_to">{{transfer.location_name_from}}</span>
-          <span *ngIf="transfer.location_name_from == transfer.location_name_to && transfer.location_name_from == 'supply'">dostawa towaru</span>
-          <span *ngIf="transfer.location_name_from == transfer.location_name_to && transfer.location_name_from == 'out'">towar wysłano</span>
-        </td>
-        <td>
-          <span *ngIf="transfer.location_name_from != transfer.location_name_to">{{transfer.location_name_to}}</span>
-          <span *ngIf="transfer.location_name_from == transfer.location_name_to">&nbsp;</span>
-        </td>
-        <td>{{transfer.date_transfer}}</td>
-        <td>{{transfer.user_name}}</td>
-      </tr>
-    </table>
-    <p [hidden]="!isNotFound">Brak historii dla wybranego produktu.</p>
-    <p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+
+<div class="pc table">
+  <div>nazwa:</div>
+  <div>ilość:</div>
+  <div>z:</div>
+  <div>do:</div>
+  <div>data:</div>
+  <div>pracownik:</div>
 </div>
-<div class="mobile">
-  <p *ngIf="selectedProduct"><b>nazwa produktu:</b> {{selectedProduct}}</p>
-  <div *ngFor="let transfer of history">
-    <p>nazwa: {{transfer.product_name}}</p>
-    <p>ilość: {{transfer.pcs}}</p>
-    <p>
-      <span *ngIf="transfer.location_name_from != transfer.location_name_to">z: {{transfer.location_name_from}}</span>
-      <span *ngIf="transfer.location_name_from == transfer.location_name_to && transfer.location_name_from == 'supply'">dostawa towaru</span>
-      <span *ngIf="transfer.location_name_from == transfer.location_name_to && transfer.location_name_from == 'out'">towar wysłano</span>
-    </p>
-    <p *ngIf="transfer.location_name_from != transfer.location_name_to">
-      <span *ngIf="transfer.location_name_from != transfer.location_name_to">do: {{transfer.location_name_to}}</span>
-      <span *ngIf="transfer.location_name_from == transfer.location_name_to">&nbsp;</span></p>
-    <p>data: {{transfer.date_transfer}}</p>
-    <p class="border">pracownik: {{transfer.user_name}}</p>
-</div>
-  <p [hidden]="!isNotFound">Tego produktu nie ma w żadnej lokalizacji.</p>
+<div class="border table" *ngFor="let transfer of history ">
+  <div><span class="mobile">nazwa: </span>{{transfer.product_name}}</div>
+  <div><span class="mobile">ilość: </span>{{transfer.pcs}}</div>
+  <div>
+    <span *ngIf="transfer.location_name_from != transfer.location_name_to"><span class="mobile">z: </span>{{transfer.location_name_from}}</span>
+    <span *ngIf="transfer.location_name_from == transfer.location_name_to && transfer.location_name_from == 'supply'">dostawa towaru</span>
+    <span *ngIf="transfer.location_name_from == transfer.location_name_to && transfer.location_name_from == 'out'">towar wysłano</span>
+  </div>
+  <div>
+    <div *ngIf="transfer.location_name_from != transfer.location_name_to">
+      <span *ngIf="transfer.location_name_from != transfer.location_name_to"><span class="mobile">do: </span>{{transfer.location_name_to}}</span>
+      <span *ngIf="transfer.location_name_from == transfer.location_name_to">&nbsp;</span></div>
+  </div>
+  <div><span class="mobile">data: </span>{{transfer.date_transfer}}</div>
+  <div><span class="mobile">pracownik: </span>{{transfer.user_name}}</div>
 </div>
 
-
+<p [hidden]="!isNotFound">Brak historii dla {{selectedProduct}}.</p>
+<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
 
 
 
