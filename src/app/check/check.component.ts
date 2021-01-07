@@ -17,10 +17,16 @@ export class CheckComponent implements OnInit {
 
   isNotFound:boolean = false;
   isConnected:boolean = true;
+
+  sliceNumber:number = 0;
+  arrayLength:number = 0;
+  plusPlus:number;
   
   constructor(
     private apiService: ApiService,
-  ) { }
+  ) {
+    this.apiService.plusPlus$.subscribe((data:number)=> this.plusPlus = data);
+   }
 
 
   ngOnInit(): void {
@@ -40,6 +46,8 @@ export class CheckComponent implements OnInit {
       data => {
         data.sort(sortTransferForTransfer);
         this.transfers = data.filter(data => data.pcs > 0 && data.location_name == this.selectedLocation);
+        this.arrayLength = this.transfers.length;
+        this.sliceNumber = 0;
         this.isNotFound = this.transfers.length == 0;
         this.selectedLocation = "";
         this.isConnected = true;
@@ -48,6 +56,13 @@ export class CheckComponent implements OnInit {
         console.log(error)
       }
     );
+  }
+  plus(){
+    this.sliceNumber += this.plusPlus;
+  }
+  minus(){
+    this.sliceNumber -= this.plusPlus;
+    if(this.sliceNumber < 0) this.sliceNumber = 0;
   }
 
   

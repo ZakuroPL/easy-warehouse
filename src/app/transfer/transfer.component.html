@@ -6,7 +6,7 @@
   </option>
 </datalist>  
 <br>
-<button (click)="refreshData()">znajdź produkt</button>
+<button (click)="isRefresh=false; transfers = [];refreshData()">znajdź produkt</button>
 <br><br>
 lokalizacja: {{locationName}}<br><br>
 <div class="pc table">
@@ -15,14 +15,22 @@ lokalizacja: {{locationName}}<br><br>
   <div>ilość:</div>
   <div>&nbsp;</div>
 </div>
-<div class="border table" *ngFor="let transfer of transfers">
+<p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
+<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+<div class="border table" *ngFor="let transfer of transfers | slice: sliceNumber : sliceNumber + plusPlus">
   <div><span class="mobile">index: </span>{{transfer.product_index}}</div>
   <div><span class="mobile">nazwa produktu: </span>{{transfer.product_name}}</div>
   <div><span class="mobile">ilość: </span>{{transfer.pcs}}</div>
   <div><fa-icon class="colorBlue" [icon]="faExchangeAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.location, transfer.product_name)"></fa-icon></div>
 </div>
-<p [hidden]="!isNotFound">Lokalizacja pusta. Brak produktów w lokalizacji.</p>
-<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+<div class="sliceButton">
+  <div>
+    <button *ngIf="sliceNumber > 0" (click)="minus()"><<</button>
+  </div>
+  <div>
+    <button *ngIf="(sliceNumber + plusPlus) < arrayLength" (click)="plus()">>></button>
+  </div>
+</div>
 
 
 
@@ -31,6 +39,7 @@ lokalizacja: {{locationName}}<br><br>
     <h2>Transfer produktu:</h2>
     <p>nazwa: {{ selectedProductName }}</p>
     <p>ilość dostępna: {{ selectedPcs }}</p>
+    <p *ngIf="isBothSame" style="color: red; background-color: white;"><b>Błąd: </b> Lokalizacja Z i DO są takie same.</p>
     <input type="number" placeholder="ilość" [(ngModel)]="pcsToTransfer"><br>
     <input placeholder="do lokalizacji" list="locations2" [(ngModel)]="locationToTransfer">
     <datalist id="locations2">
@@ -46,7 +55,7 @@ lokalizacja: {{locationName}}<br><br>
     <div class="center">
       <p>Nie posiadasz wystarczającej liczby produktu</p>
       <br>
-      <button class="button" (click)="ok()">OK</button>
+      <button class="button" (click)="isRefresh=true ; ok()">OK</button>
     </div>
   </div>
 
@@ -55,6 +64,6 @@ lokalizacja: {{locationName}}<br><br>
     <div class="center">
       <p>Transfer został wykonany prawidłowo</p>
       <br>
-      <button class="button" (click)="ok()">OK</button>
+      <button class="button" (click)="isRefresh=true ;ok()">OK</button>
     </div>
   </div>

@@ -26,13 +26,22 @@
   <div>ilość:</div>
   <div>lokalizacja:</div>
 </div>
-<div class="border table" *ngFor="let transfer of transfers">
+<p [hidden]="!isNotFound">Tego produktu nie ma w żadnej lokalizacji.</p>
+<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+<div class="border table" *ngFor="let transfer of transfers | slice: sliceNumber : sliceNumber + plusPlus">
   <div><span class="mobile">nazwa produktu: </span>{{transfer.product_name}}</div>
   <div><span class="mobile">ilość: </span>{{transfer.pcs}}</div>
   <div><span class="mobile">lokalizacja: </span>{{transfer.location_name}}</div>
 </div>
-<p [hidden]="!isNotFound">Tego produktu nie ma w żadnej lokalizacji.</p>
-<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+<div class="sliceButton">
+  <div>
+    <button *ngIf="sliceNumber > 0" (click)="minus()"><<</button>
+  </div>
+  <div>
+    <button *ngIf="(sliceNumber + plusPlus) < arrayLength" (click)="plus()">>></button>
+  </div>
+</div>
+
 
 <div [hidden]="!isMoreThanOne" class="visible">
   <h2>Błąd: użyłeś więcej niż jednego parametru</h2>

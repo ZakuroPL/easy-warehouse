@@ -22,7 +22,7 @@ export class TransferComponent implements OnInit {
   selectedProduct:string;
   selectedProductName:string;
   selectedPcs:number;
-  locationFrom:string;
+  locationFrom:number;
   pcsToTransfer:number;
   locationToTransfer:string;
   locattionToTransferId:number;
@@ -32,10 +32,18 @@ export class TransferComponent implements OnInit {
   isSuccess:boolean = false;
   isNotFound:boolean = false;
   isConnected:boolean = true;
+  isBothSame:boolean = false;
+
+  sliceNumber:number = 0;
+  arrayLength:number = 0;
+  plusPlus:number;
+  isRefresh:boolean;
 
   constructor(
     private apiService: ApiService,
-    ) { }
+    ) { 
+      this.apiService.plusPlus$.subscribe((data:number)=> this.plusPlus = data);
+    }
 
   ngOnInit(): void {
     this.apiService.getLocationList().subscribe(
@@ -56,12 +64,14 @@ export class TransferComponent implements OnInit {
     this.isGetSelectedProduct = true;
   }
   tryTransfer(){
+    this.isBothSame = false;
     for(let location of this.locations){
       if(this.locationToTransfer == location.location){
         this.locattionToTransferId = location.id;
       }
     }
-    if(this.pcsToTransfer <= this.selectedPcs && this.pcsToTransfer != null) this.postTransfer();
+    if(this.pcsToTransfer <= this.selectedPcs && this.pcsToTransfer != null && this.locationFrom != this.locattionToTransferId) this.postTransfer();
+    else if(this.locationFrom == this.locattionToTransferId) this.isBothSame = true;
     else{
       this.isWrongPcs = true;
       this.pcsToTransfer = null;
@@ -95,11 +105,20 @@ export class TransferComponent implements OnInit {
       data => {
         data.sort(sortTransferForTransfer);
         this.transfers = data.filter(data=> data.pcs > 0 && data.location_name == this.locationName);
+        if(this.transfers && this.sliceNumber == this.transfers.length ||this.transfers && !this.isRefresh) this.sliceNumber = 0;
+        this.arrayLength = this.transfers.length;
         this.isNotFound = this.transfers.length == 0;
         this.isConnected = true;
         this.selectedLocation = "";
       },
       error => console.log(error)
     );
+  }
+  plus(){
+    this.sliceNumber += this.plusPlus;
+  }
+  minus(){
+    this.sliceNumber -= this.plusPlus;
+    if(this.sliceNumber < 0) this.sliceNumber = 0;
   }
 }

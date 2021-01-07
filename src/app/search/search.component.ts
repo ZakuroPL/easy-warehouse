@@ -25,9 +25,15 @@ export class SearchComponent implements OnInit {
   isAllEmpty:boolean = false;
   isNotFound:boolean = false;
   isConnected:boolean = true;
+
+  sliceNumber:number = 0;
+  arrayLength:number = 0;
+  plusPlus:number;
   
   constructor(
-    private apiService: ApiService) { }
+    private apiService: ApiService) {
+      this.apiService.plusPlus$.subscribe((data:number)=> this.plusPlus = data);
+     }
 
   ngOnInit(): void {
     this.apiService.getProductList().subscribe(
@@ -54,6 +60,8 @@ export class SearchComponent implements OnInit {
       data => {
         data.sort(sortTransferForTransfer);
         this.transfers = data.filter(data => data.product_name == this.selectedProduct && data.pcs > 0);
+        this.arrayLength = this.transfers.length;
+        this.sliceNumber = 0;
         this.isConnected = true;
         this.isNotFound = this.transfers.length == 0;
         this.selectedProductByIndex = null;
@@ -72,5 +80,12 @@ export class SearchComponent implements OnInit {
   ok(){
     this.isMoreThanOne = false;
     this.isAllEmpty = false;
+  }
+  plus(){
+    this.sliceNumber += this.plusPlus;
+  }
+  minus(){
+    this.sliceNumber -= this.plusPlus;
+    if(this.sliceNumber < 0) this.sliceNumber =0;
   }
 }

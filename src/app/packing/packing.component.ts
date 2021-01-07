@@ -25,10 +25,16 @@ export class PackingComponent implements OnInit {
   isSuccess:boolean = false;
   isNotFound:boolean = false;
   isConnected:boolean = false;
+  
+  sliceNumber:number = 0;
+  arrayLength:number = 0;
+  plusPlus:number;
 
   constructor(
     private apiService: ApiService,
-    ) { }
+    ) {
+      this.apiService.plusPlus$.subscribe((data:number)=> this.plusPlus = data);
+     }
 
   ngOnInit(): void {
     this.refreshData();
@@ -74,11 +80,20 @@ export class PackingComponent implements OnInit {
     this.apiService.getTransfers().subscribe(
       data => {
         this.transfers = data.filter(filterTransferForPacking);
+        if(this.sliceNumber == this.transfers.length) this.sliceNumber = 0;
+        this.arrayLength = this.transfers.length;
         this.isConnected = true;
         this.isNotFound = this.transfers.length == 0;
       },
       error => console.log(error)
     );
+  }
+  plus(){
+    this.sliceNumber += this.plusPlus;
+  }
+  minus(){
+    this.sliceNumber -= this.plusPlus;
+    if(this.sliceNumber < 0) this.sliceNumber = 0;
   }
 
 }

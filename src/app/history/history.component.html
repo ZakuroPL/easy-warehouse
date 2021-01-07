@@ -30,7 +30,9 @@
   <div>data:</div>
   <div>pracownik:</div>
 </div>
-<div class="border table" *ngFor="let transfer of history ">
+<p [hidden]="!isNotFound">Brak historii dla {{selectedProduct}}.</p>
+<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+<div class="border table" *ngFor="let transfer of history | slice: sliceNumber : sliceNumber + plusPlus">
   <div><span class="mobile">nazwa: </span>{{transfer.product_name}}</div>
   <div><span class="mobile">ilość: </span>{{transfer.pcs}}</div>
   <div>
@@ -46,9 +48,16 @@
   <div><span class="mobile">data: </span>{{transfer.date_transfer}}</div>
   <div><span class="mobile">pracownik: </span>{{transfer.user_name}}</div>
 </div>
+<div class="sliceButton">
+  <div>
+    <button *ngIf="sliceNumber > 0" (click)="minus()"><<</button>
+  </div>
+  <div>
+    <button *ngIf="(sliceNumber + plusPlus) < arrayLength" (click)="plus()">>></button>
+  </div>
+</div>
 
-<p [hidden]="!isNotFound">Brak historii dla {{selectedProduct}}.</p>
-<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+
 
 
 

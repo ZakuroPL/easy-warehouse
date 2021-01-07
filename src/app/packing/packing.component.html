@@ -8,15 +8,22 @@
   <div>ilość:</div>
   <div>&nbsp;</div>
 </div>
-<div class="border table" *ngFor="let transfer of transfers">
+<p [hidden]="!isNotFound">Lokalizacja out jest pusta.</p>
+<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+<div class="border table" *ngFor="let transfer of transfers | slice: sliceNumber : sliceNumber + plusPlus">
   <div><span class="mobile">index: </span>{{transfer.product_index}}</div>
   <div><span class="mobile">nazwa produktu: </span>{{transfer.product_name}}</div>
   <div><span class="mobile">ilość: </span>{{transfer.pcs}}</div>
   <div><fa-icon class="colorBlue" [icon]="faSignOutAlt" (click)="getSelectedProduct(transfer.product, transfer.pcs, transfer.product_name)"></fa-icon></div>
 </div>
-
-<p [hidden]="!isNotFound">Lokalizacja out jest pusta.</p>
-<p [hidden]="isConnected">Ładowanie <img style="width: 1em" src="../../assets/loadingLight.svg" /></p>
+<div class="sliceButton">
+  <div>
+    <button *ngIf="sliceNumber > 0" (click)="minus()"><<</button>
+  </div>
+  <div>
+    <button *ngIf="(sliceNumber + plusPlus) < arrayLength" (click)="plus()">>></button>
+  </div>
+</div>
 
 
   <div [hidden]="!isGetSelectedProduct" class="visible">

@@ -24,19 +24,22 @@ export class HistoryComponent implements OnInit {
   isNotFound:boolean = false;
   isConnected:boolean = true;
 
+  sliceNumber:number = 0;
+  arrayLength:number = 0;
+  plusPlus:number;
+
   constructor(
     private apiService: ApiService,
-  ) { }
+  ) { 
+    this.apiService.plusPlus$.subscribe((data:number)=> this.plusPlus = data);
+  }
 
   ngOnInit(): void {
     this.apiService.getProductList().subscribe(
-      data => {
-        this.products = data.sort(sortProduct);
-      },
+      data => this.products = data.sort(sortProduct),
       error => console.log(error)
     )
   }
-
   getProductFromList(){
     this.isConnected = false;
     this.isNotFound = false;
@@ -51,6 +54,9 @@ export class HistoryComponent implements OnInit {
       data => {
         data.sort(sortHistory);
         this.history = data.filter(data => data.product_name == this.selectedProduct);
+        this.arrayLength = this.history.length;
+        this.sliceNumber = 0;
+        // console.table(this.history);
         this.isConnected = true;
         this.isNotFound = this.history.length == 0;
         this.selectedProductByIndex = null;
@@ -70,5 +76,12 @@ export class HistoryComponent implements OnInit {
   ok(){
     this.isMoreThanOne = false;
     this.isAllEmpty = false;
+  }
+  plus(){
+    this.sliceNumber += this.plusPlus;
+  }
+  minus(){
+    this.sliceNumber -= this.plusPlus;
+    if(this.sliceNumber < 0) this.sliceNumber = 0;
   }
 }

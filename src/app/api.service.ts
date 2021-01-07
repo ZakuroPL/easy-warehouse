@@ -4,11 +4,15 @@ import { History } from './models/history';
 import { Transfer } from './models/transfer';
 import { Product } from './models/product';
 import { Location } from './models/location';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+
+  private plusPlus = new BehaviorSubject<number>(0);
+  plusPlus$ = this.plusPlus.asObservable();
 
   // apiURL = "http://127.0.0.1:8000/api/"
   // authURL = "http://127.0.0.1:8000/auth/"
@@ -23,7 +27,11 @@ export class ApiService {
   constructor(
     private httpClient: HttpClient,
   ) { }
-  
+
+  plusPlusMessage(plusPlus:number){
+    this.plusPlus.next(plusPlus);
+  }
+
   getTransfers() {
     return  this.httpClient.get<Transfer[]>(`${this.apiURL}transfers/`, {headers: this.getToken()});
   }
