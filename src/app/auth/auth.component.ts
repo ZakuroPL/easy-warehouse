@@ -36,10 +36,10 @@ export class AuthComponent implements OnInit {
   saveForm(){
     this.isConnected = false;
     this.apiService.loginUser(this.loginForm.value).subscribe(
-      (result: myToken) => {
+      (result:string) => {
         this.isConnected = true;
         this.isWrongPassword = false;
-        sessionStorage.setItem('token', result.token);
+        sessionStorage.setItem('token', result);
         this.guard.canActivate();
         this.loginForm.reset();
       },

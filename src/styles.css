@@ -40,7 +40,7 @@ button:focus{
   box-shadow: 10px 10px 7px gray;
 }
 .visible h2{
-  margin-top: 5px;
+  margin: 5px 50px 0px 0px;
 }
 .visible p{
   margin: 4px;
@@ -91,6 +91,11 @@ input[type=number] {
   display: grid;
   grid-template-columns: 40px 40px;
   margin-top: 5px;
+}
+.absoluteButton{
+  position: absolute;
+  top: -5px;
+  right: -10px;
 }
 
 @media only screen and (max-width: 650px) {

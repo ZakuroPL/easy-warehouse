@@ -4,6 +4,7 @@
 <form [formGroup]="loginForm" (ngSubmit)="saveForm()">
     <input type="text" formControlName="username" oninput="this.value = this.value.toLowerCase()"><br>
     <input type="password" formControlName="password"><br>
+    login: tester / password: tester<br>
     <button type="submit">zaloguj się</button>
 </form>
 </div>

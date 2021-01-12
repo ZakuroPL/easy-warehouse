@@ -15,10 +15,10 @@ export class ApiService {
   plusPlus$ = this.plusPlus.asObservable();
 
   // apiURL = "http://127.0.0.1:8000/api/"
-  // authURL = "http://127.0.0.1:8000/auth/"
+  // authURL = "http://127.0.0.1:8000/login/"
 
   apiURL = "https://zakuro-warehouse.herokuapp.com/api/"
-  authURL = "https://zakuro-warehouse.herokuapp.com/auth/"
+  authURL = "https://zakuro-warehouse.herokuapp.com/login/"
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
