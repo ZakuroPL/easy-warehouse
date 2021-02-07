@@ -4,7 +4,8 @@ import { History } from './models/history';
 import { Transfer } from './models/transfer';
 import { Product } from './models/product';
 import { Location } from './models/location';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,13 @@ export class ApiService {
   private plusPlus = new BehaviorSubject<number>(0);
   plusPlus$ = this.plusPlus.asObservable();
 
-  // apiURL = "http://127.0.0.1:8000/api/"
-  // authURL = "http://127.0.0.1:8000/login/"
+  apiURL = "http://127.0.0.1:8000/api/"
+  authURL = "http://127.0.0.1:8000/login/"
 
-  apiURL = "https://zakuro-warehouse.herokuapp.com/api/"
-  authURL = "https://zakuro-warehouse.herokuapp.com/login/"
+  // apiURL = "https://zakuro-warehouse.herokuapp.com/api/"
+  // authURL = "https://zakuro-warehouse.herokuapp.com/login/"
+
+  locations:Location[] = [];
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -35,8 +38,11 @@ export class ApiService {
   getTransfers() {
     return  this.httpClient.get<Transfer[]>(`${this.apiURL}transfers/`, {headers: this.getToken()});
   }
-  getLocationList() {
-    return this.httpClient.get<Location[]>(`${this.apiURL}locations/`, {headers: this.getToken()})
+  getLocationList():Observable<Location[]>{
+    if(!this.locations.length) {
+      return this.httpClient.get<Location[]>(`${this.apiURL}locations/`, {headers: this.getToken()}).pipe(tap((locations:Location[]) => this.locations = locations))
+    }
+    else return of(this.locations);
   }
   getProductList() {
     return this.httpClient.get<Product[]>(`${this.apiURL}products/`, {headers: this.getToken()})

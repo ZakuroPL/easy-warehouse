@@ -30,7 +30,7 @@ export class HistoryComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-  ) { 
+  ) {
     this.apiService.plusPlus$.subscribe((data:number)=> this.plusPlus = data);
   }
 
@@ -46,7 +46,7 @@ export class HistoryComponent implements OnInit {
     for (let product of this.products){
       if(!this.isMoreThanOne){
         if(this.selectedProductByIndex == product.index ||
-            this.selectedProductByName == product.name 
+            this.selectedProductByName == product.name
             || this.selectedProductByEan == product.ean) this.selectedProduct = product.name;
         }
     }

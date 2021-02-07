@@ -25,7 +25,7 @@ export class PackingComponent implements OnInit {
   isSuccess:boolean = false;
   isNotFound:boolean = false;
   isConnected:boolean = false;
-  
+
   sliceNumber:number = 0;
   arrayLength:number = 0;
   plusPlus:number;
@@ -53,7 +53,7 @@ export class PackingComponent implements OnInit {
       this.isWrongPcs = true;
       this.pcsToTransfer = null;
   }
-    }  
+    }
   postTransfer(){
     this.isGetSelectedProduct = false;
     this.apiService.postPackingProduct(this.locationFrom, this.selectedProduct, this.pcsToTransfer).subscribe(

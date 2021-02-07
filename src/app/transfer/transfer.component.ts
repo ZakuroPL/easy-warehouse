@@ -3,7 +3,7 @@ import { ApiService } from '../api.service';
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
 import { sortTransferForTransfer, Transfer } from '../models/transfer';
 import { Location } from '../models/location';
-  
+
 
 
 @Component({
@@ -41,7 +41,7 @@ export class TransferComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    ) { 
+    ) {
       this.apiService.plusPlus$.subscribe((data:number)=> this.plusPlus = data);
     }
 
@@ -77,7 +77,7 @@ export class TransferComponent implements OnInit {
       this.pcsToTransfer = null;
       this.locationToTransfer = "";
   }
-    }  
+    }
   postTransfer(){
     this.apiService.postTransferProduct(this.locationFrom, this.selectedProduct, this.pcsToTransfer, this.locattionToTransferId).subscribe(
       result => {

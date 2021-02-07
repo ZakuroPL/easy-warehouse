@@ -21,7 +21,7 @@ export class CheckComponent implements OnInit {
   sliceNumber:number = 0;
   arrayLength:number = 0;
   plusPlus:number;
-  
+
   constructor(
     private apiService: ApiService,
   ) {
@@ -31,7 +31,7 @@ export class CheckComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiService.getLocationList().subscribe(
-      data => {
+      (data:Location[]) => {
         this.locations = data;
       },
       error => console.log(error)
@@ -65,6 +65,6 @@ export class CheckComponent implements OnInit {
     if(this.sliceNumber < 0) this.sliceNumber = 0;
   }
 
-  
+
 
 }

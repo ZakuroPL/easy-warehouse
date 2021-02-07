@@ -29,7 +29,7 @@ export class SearchComponent implements OnInit {
   sliceNumber:number = 0;
   arrayLength:number = 0;
   plusPlus:number;
-  
+
   constructor(
     private apiService: ApiService) {
       this.apiService.plusPlus$.subscribe((data:number)=> this.plusPlus = data);
@@ -52,7 +52,7 @@ export class SearchComponent implements OnInit {
     for (let product of this.products){
       if(!this.isMoreThanOne){
         if(this.selectedProductByIndex == product.index ||
-            this.selectedProductByName == product.name 
+            this.selectedProductByName == product.name
             || this.selectedProductByEan == product.ean) this.selectedProduct = product.name;
         }
     }
